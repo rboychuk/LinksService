@@ -50,7 +50,7 @@
             <!-- Left Side Of Navbar -->
             <ul class="nav navbar-nav">
                 <li><a href="{{ url('/home') }}">Home</a></li>
-                @if(Auth::user()->role=='superuser')
+                @if(!is_null(Auth::user()) && Auth::user()->role=='superuser')
                     <li><a href="{{ url('/report') }}">Report</a></li>
                 @endif
             </ul>

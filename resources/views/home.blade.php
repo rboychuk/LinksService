@@ -20,15 +20,18 @@
                                 @else
                                     <option selected value="0">Choose the site..</option>
                                 @endif
-                                @foreach($sites as $site)
-                                    @if(!isset($current_site))
-                                        <option value="{{ $site->id }}">{{$site->name}}</option>
-                                    @else
-                                        @if($current_site->id!=$site->id)
+                                @if(isset($sites))
+                                    @foreach($sites as $site)
+                                        @if(!isset($current_site))
                                             <option value="{{ $site->id }}">{{$site->name}}</option>
+                                        @else
+                                            @if($current_site->id!=$site->id)
+                                                <option value="{{ $site->id }}">{{$site->name}}</option>
+                                            @endif
                                         @endif
-                                    @endif
-                                @endforeach
+                                    @endforeach
+                                @endif
+
                             </select>
                         </div>
                     </div>
