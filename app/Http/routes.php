@@ -12,5 +12,21 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 });
+
+Route::auth();
+
+Route::get('/home', 'HomeController@index');
+
+Route::get('/links/{id}', 'LinkController@getLinks');
+
+Route::post('/search', 'LinkController@searchLinks');
+Route::post('/add_link', 'LinkController@addLinks');
+Route::post('/delete', 'LinkController@deleteLink');
+
+Route::post('/add_site', 'SiteController@addSite');
+Route::post('/delete_site', 'SiteController@deleteSite');
+
+Route::get('/report','ReportController@index');
+Route::post('/report','ReportController@makeReport');
