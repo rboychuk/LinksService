@@ -88,12 +88,12 @@ class LinkController extends Controller
         $attributes = $request->all();
         $url        = $attributes['search_url'];
 
-        if ( ! $this->validator($url)) {
-
-            return redirect('/links/' . $attributes['site_id'])->with('incorrect_search',
-                'Please insert correct url')->with('url', $url);
-
-        }
+        //if ( ! $this->validator($url)) {
+        //
+        //    return redirect('/links/' . $attributes['site_id'])->with('incorrect_search',
+        //        'Please insert correct url')->with('url', $url);
+        //
+        //}
 
         $parsed_url = $this->parseUrl($url);
 
@@ -102,7 +102,7 @@ class LinkController extends Controller
         $attr = $this->getPageAttribute($attributes);
 
         $attr['links'] = $attr['links']->filter(function ($item) use ($url) {
-            if ($item->link == $url) {
+            if ($item->link == htmlspecialchars($url)) {
                 return true;
             }
         });
