@@ -31,22 +31,10 @@
                                         @endif
                                     @endforeach
                                 @endif
-
                             </select>
                         </div>
                     </div>
                     @if(Auth::user()->role=='superuser')
-                        {{--<div class="col-sm-12">--}}
-                        {{--<div class="form-group">--}}
-                        {{--@if(isset($current_site))--}}
-                        {{--<form method="POST" action="/delete_site">--}}
-                        {{--{{ csrf_field() }}--}}
-                        {{--<input type="hidden" name="site_id" value="{{ $current_site->id }}">--}}
-                        {{--<button class="form-control btn-danger" class="">Delete site</button>--}}
-                        {{--</form>--}}
-                        {{--@endif--}}
-                        {{--</div>--}}
-                        {{--</div>--}}
                         <div class="col-sm-12">
                             <form method="POST" action="/add_site">
                                 {{ csrf_field() }}
@@ -113,14 +101,16 @@
 
                                             <h4>Link <strong>{{ $empty }}</strong> is not available now!</h4>
                                             <p>Do you want to add this link?</p>
-                                            @if(isset($domain) && !$domain->multiple)
+                                            @if(isset($domain) && !$domain->multiple && Auth::user()->role=='superuser')
                                                 <input type="checkbox" id='multidomain' name="multiple"
                                                        value="{{ $links->count() }}">
                                                 <label for="multidomain">Make this domain available for the several
                                                     links</label>
                                             @endif
                                             <p>
-                                                <button type="submit" class="btn btn-danger" id="add_link">Add the link</button>
+                                                <button type="submit" class="btn btn-danger" id="add_link">Add the
+                                                    link
+                                                </button>
                                                 <button type="button" class="btn btn-default"
                                                         onclick="$('.alert').hide()">
                                                     Not now!
