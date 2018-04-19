@@ -3,13 +3,6 @@ $('#sel1').on 'change', ->
     if value != 0
         location.href = '/links/' + value
 
-
-$('#sel2').on 'change', ->
-    value = $(this).val()
-    if value != 0
-        location.href = '/report/' + value
-
-
 updateTable: (value) ->
     data =
         url: 'table'
