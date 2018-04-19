@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Site;
 use App\Link;
 use Illuminate\Support\Facades\Auth;
+use App\Domain;
 
 class LinkController extends Controller
 {
@@ -31,15 +32,42 @@ class LinkController extends Controller
     {
 
         $attributes = $request->all();
+        $url        = $attributes['search_url'];
+
+        $domain = $this->updateDomains($attributes);
 
         $link = new Link();
 
-        $link->site_id = $attributes['site_id'];
-        $link->link    = htmlspecialchars($attributes['search_url']);
-        $link->creator = Auth::user()->email;
+        $link->site_id   = $attributes['site_id'];
+        $link->domain_id = $domain->id;
+        $link->link      = htmlspecialchars($url);
+        $link->creator   = Auth::user()->email;
         $link->save();
 
         return redirect('/links/' . $attributes['site_id']);
+
+    }
+
+
+    protected function updateDomains($attributes)
+    {
+
+        $url        = $attributes['search_url'];
+        $parsed_url = $this->parseUrl($url);
+
+        $domain = Domain::where('domain', $parsed_url)->first();
+
+        if (is_null($domain)) {
+            $domain         = new Domain();
+            $domain->domain = $parsed_url;
+
+            $domain->save();
+        };
+        if (isset($attributes['multiple']) && $attributes['multiple']) {
+            Domain::where('domain', $parsed_url)->update(['multiple' => 1]);
+        }
+
+        return $domain;
 
     }
 
@@ -58,25 +86,37 @@ class LinkController extends Controller
     {
 
         $attributes = $request->all();
+        $url        = $attributes['search_url'];
 
-        if ($this->validator($attributes['search_url'])) {
-            $attr = $this->getPageAttribute($attributes);
+        if ( ! $this->validator($url)) {
 
-            $attr['links'] = $attr['links']->filter(function ($item) use ($attributes) {
-                if ($item->link == $attributes['search_url']) {
-                    return true;
-                }
-            });
+            return redirect('/links/' . $attributes['site_id'])->with('incorrect_search',
+                'Please insert correct url')->with('url', $url);
 
-            if ( ! $attr['links']->count()) {
-                $attr['empty'] = $attributes['search_url'];
-            }
-
-            return view('home', $attr);
         }
 
-        return redirect('/links/' . $attributes['site_id'])->with('incorrect_search',
-            'Please insert correct url')->with('url', $attributes['search_url']);
+        $parsed_url = $this->parseUrl($url);
+
+        $domain = Domain::where('domain', $parsed_url)->first();
+
+        $attr = $this->getPageAttribute($attributes);
+
+        $attr['links'] = $attr['links']->filter(function ($item) use ($url) {
+            if ($item->link == $url) {
+                return true;
+            }
+        });
+
+        if ( ! $attr['links']->count()) {
+            $attr['empty'] = $url;
+        }
+
+        if ( ! is_null($domain)) {
+            $attr['links'] = Link::where('site_id', $attributes['site_id'])->where('domain_id', $domain->id)->get();
+        }
+
+        return view('home', $attr + compact('domain', $parsed_url));
+
 
     }
 
@@ -98,6 +138,21 @@ class LinkController extends Controller
         $match = preg_match($this->pattern, $url, $matches);
 
         return $match;
+
+    }
+
+
+    protected function parseUrl($url)
+    {
+        $r = strpos($url, 'http');
+
+        if (strpos($url, 'http') === false) {
+            $url = 'http://' . $url;
+        }
+
+        $parse = str_replace('www.', '', parse_url($url, PHP_URL_HOST));
+
+        return $parse;
 
     }
 
