@@ -107,10 +107,20 @@
                                     <input type="hidden" name="search_url" value="{{ $empty }}">
                                     <div class="col-sm-12">
                                         <div class="alert alert-danger alert-dismissible" role="alert">
+                                            @if(isset($domain) && !is_null($domain))
+                                                <h4>Domain <strong>{{ $domain->domain }}</strong> was found</h4>
+                                            @endif
+
                                             <h4>Link <strong>{{ $empty }}</strong> is not available now!</h4>
-                                            <p>Do you want to add this link</p>
+                                            <p>Do you want to add this link?</p>
+                                            @if(isset($domain) && !$domain->multiple)
+                                                <input type="checkbox" id='multidomain' name="multiple"
+                                                       value="{{ $links->count() }}">
+                                                <label for="multidomain">Make this domain available for the several
+                                                    links</label>
+                                            @endif
                                             <p>
-                                                <button type="submit" class="btn btn-danger">Add the link</button>
+                                                <button type="submit" class="btn btn-danger" id="add_link">Add the link</button>
                                                 <button type="button" class="btn btn-default"
                                                         onclick="$('.alert').hide()">
                                                     Not now!

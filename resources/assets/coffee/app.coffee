@@ -26,3 +26,12 @@ send: (data, callback) ->
     )
         .done(callback ?= ->)
     return
+
+if($('#multidomain').val() > 0 && !$('#multidomain').is(':checked'))
+    $('#add_link').hide()
+
+$('#multidomain').on 'change', ->
+    if($('#multidomain').is(':checked'))
+        $('#add_link').show()
+    else
+        $('#add_link').hide()
