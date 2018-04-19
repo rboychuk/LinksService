@@ -32,6 +32,6 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
          $schedule->command('mail:report')
-                  ->everyFiveMinutes();
+                  ->dailyAt('23:55');
     }
 }
