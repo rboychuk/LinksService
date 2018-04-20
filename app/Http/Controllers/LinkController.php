@@ -55,11 +55,12 @@ class LinkController extends Controller
         $url        = $attributes['search_url'];
         $parsed_url = $this->parseUrl($url);
 
-        $domain = Domain::where('domain', $parsed_url)->first();
+        $domain = Domain::where('domain', $parsed_url)->where('site_id', $attributes['site_id'])->first();
 
         if (is_null($domain)) {
             $domain         = new Domain();
             $domain->domain = $parsed_url;
+            $domain->site_id = $attributes['site_id'];
 
             $domain->save();
         };
