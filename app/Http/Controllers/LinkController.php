@@ -97,7 +97,7 @@ class LinkController extends Controller
 
         $parsed_url = $this->parseUrl($url);
 
-        $domain = Domain::where('domain', $parsed_url)->first();
+        $domain = Domain::where('domain', $parsed_url)->where('site_id', $attributes['site_id'])->first();
 
         $attr = $this->getPageAttribute($attributes);
 
