@@ -108,9 +108,11 @@
                                                     links</label>
                                             @endif
                                             <p>
-                                                <button type="submit" class="btn btn-danger" id="add_link">Add the
-                                                    link
-                                                </button>
+                                                @if(!$links->count() || (isset($domain) && $domain->multiple))
+                                                    <button type="submit" class="btn btn-danger" id="add_link">Add the
+                                                        link
+                                                    </button>
+                                                @endif
                                                 <button type="button" class="btn btn-default"
                                                         onclick="$('.alert').hide()">
                                                     Not now!
