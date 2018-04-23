@@ -55,12 +55,14 @@ class MailReporter extends Command
             }
         }
 
-        Mail::send('emails.reports', compact('links'), function ($message) use ($date) {
-            $message->from('support@rental24h.com', 'Service');
-            $message->subject('Report about new links for ' . $date);
+        if (count($links)) {
+            Mail::send('emails.reports', compact('links'), function ($message) use ($date) {
+                $message->from('support@rental24h.com', 'Service');
+                $message->subject('Report about new links for ' . $date);
 
-            $message->to('alex101ki@gmail.com')->cc('alex_ki@ukr.net');
-        });
+                $message->to(env('MAIL_TO'))->cc(env('MAIL_TO_CC'));
+            });
+        }
 
     }
 }
