@@ -42,11 +42,11 @@
                             </div>
                         </div>
                     @endif
-                    @if(isset($unique))
-                        @foreach($unique as $site=>$attr)
+                    @if(isset($results))
+                        @foreach($results as $site=>$link)
                             <div class="col-sm-12">
                                 <div class="form-group">
-                                    <a href="{{ $attr->url }}">
+                                    <a href="{{ $link }}">
                                         Domain list for {{ $site }}
                                     </a>
                                 </div>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Domain;
 use Illuminate\Http\Request;
 
 use App\User;
@@ -17,7 +18,29 @@ class ReportController extends Controller
         $users = User::get();
         $sites = Site::get();
 
-        $unique = Link::join('sites', 'sites.id', '=', 'site_id')->orderBy('sites.name')->get();
+        $unique        = Link::join('sites', 'sites.id', '=', 'site_id')->orderBy('sites.name')->get();
+        $unique_domain = Domain::join('sites', 'sites.id', '=', 'site_id')->orderBy('sites.name')->get();
+
+        $results = [];
+
+        foreach ($unique as $link) {
+            if ( ! isset($results[$link->name])) {
+                $results[$link->name] = [];
+            }
+            $results[$link->name][] = $this->parseUrl($link->link);
+        }
+
+        foreach ($unique_domain as $link) {
+            if ( ! isset($results[$link->name])) {
+                $results[$link->name] = [];
+            }
+            $results[$link->name][] = $this->parseUrl($link->domain);
+        }
+
+        foreach($results as $key=>$result){
+            $results[$key]=array_unique($result);
+            $results[$key]=$this->makeDownloadLinks($key, $results[$key]);
+        }
 
         $unique = $unique->groupBy(function ($item) {
             return $item->name;
@@ -42,7 +65,7 @@ class ReportController extends Controller
         $file = fopen(public_path($path), 'w');
 
         foreach ($links as $item) {
-            fputcsv($file, [$this->parseUrl($item->link)]);
+            fputcsv($file, [$item]);
         }
 
         fclose($file);
