@@ -126,8 +126,12 @@
                         @endif
                         @endif
                     </div>
-                    <div id="table">
-                        @include('components.table')
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div id="table">
+                                @include('components.table')
+                            </div>
+                        </div>
                     </div>
             </div>
         </div>
