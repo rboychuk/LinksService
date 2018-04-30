@@ -39,6 +39,7 @@ class ReportController extends Controller
 
         foreach($results as $key=>$result){
             $results[$key]=array_unique($result);
+            asort($results[$key]);
             $results[$key]=$this->makeDownloadLinks($key, $results[$key]);
         }
 
