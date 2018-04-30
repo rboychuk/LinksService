@@ -42,17 +42,7 @@ class ReportController extends Controller
             $results[$key]=$this->makeDownloadLinks($key, $results[$key]);
         }
 
-        $unique = $unique->groupBy(function ($item) {
-            return $item->name;
-        });
-
-        $unique->map(function ($item, $name) {
-            $item->url = $this->makeDownloadLinks($name, $item);
-
-            return $item;
-        });
-
-        return view('report', compact('users', 'sites', 'unique'));
+        return view('report', compact('users', 'sites', 'results'));
 
     }
 
