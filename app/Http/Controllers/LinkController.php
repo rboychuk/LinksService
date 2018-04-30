@@ -145,7 +145,6 @@ class LinkController extends Controller
 
     protected function parseUrl($url)
     {
-        $r = strpos($url, 'http');
 
         if (strpos($url, 'http') === false) {
             $url = 'http://' . $url;

@@ -17,7 +17,37 @@ class ReportController extends Controller
         $users = User::get();
         $sites = Site::get();
 
-        return view('report', compact('users', 'sites'));
+        $unique = Link::join('sites', 'sites.id', '=', 'site_id')->groupBy('links.link')->get();
+
+        $unique = $unique->groupBy(function ($item) {
+            return $item->name;
+        });
+
+        $unique->map(function ($item, $name) {
+            $item->url = $this->makeDownloadLinks($name, $item);
+
+            return $item;
+        });
+
+        return view('report', compact('users', 'sites', 'unique'));
+
+    }
+
+
+    public function makeDownloadLinks($name, $links)
+    {
+
+        $path = 'domains_' . $name . '.csv';
+
+        $file = fopen(public_path($path), 'w');
+
+        foreach ($links as $item) {
+            fputcsv($file, [$this->parseUrl($item->link)]);
+        }
+
+        fclose($file);
+
+        return url($path);
 
     }
 
@@ -49,11 +79,25 @@ class ReportController extends Controller
         $file = fopen(public_path($path), 'w');
 
         foreach ($array as $item) {
-            fputcsv($file, [$item['name'],$item['link'], $item['creator'],]);
+            fputcsv($file, [$item['name'], $item['link'], $item['creator'],]);
         }
 
         fclose($file);
 
         return url($path);
+    }
+
+
+    protected function parseUrl($url)
+    {
+
+        if (strpos($url, 'http') === false) {
+            $url = 'http://' . $url;
+        }
+
+        $parse = str_replace('www.', '', parse_url($url, PHP_URL_HOST));
+
+        return $parse;
+
     }
 }
