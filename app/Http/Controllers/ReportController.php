@@ -17,7 +17,7 @@ class ReportController extends Controller
         $users = User::get();
         $sites = Site::get();
 
-        $unique = Link::join('sites', 'sites.id', '=', 'site_id')->groupBy('links.link')->get();
+        $unique = Link::join('sites', 'sites.id', '=', 'site_id')->orderBy('sites.name')->get();
 
         $unique = $unique->groupBy(function ($item) {
             return $item->name;
