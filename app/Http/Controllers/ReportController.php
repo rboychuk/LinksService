@@ -74,7 +74,8 @@ class ReportController extends Controller
         $links = Link::join('sites', 'sites.id', '=', 'site_id')
                      ->where('creator', $attr['user_email'])
                      ->where('sites.id', $attr['site_id'])
-                     ->get();
+                     ->get(['links.*','sites.name']);
+
         $users = User::get();
         $sites = Site::get();
 
