@@ -58,8 +58,8 @@ class LinkController extends Controller
         $domain = Domain::where('domain', $parsed_url)->where('site_id', $attributes['site_id'])->first();
 
         if (is_null($domain)) {
-            $domain         = new Domain();
-            $domain->domain = $parsed_url;
+            $domain          = new Domain();
+            $domain->domain  = $parsed_url;
             $domain->site_id = $attributes['site_id'];
 
             $domain->save();
@@ -113,7 +113,8 @@ class LinkController extends Controller
         }
 
         if ( ! is_null($domain)) {
-            $attr['links'] = Link::where('site_id', $attributes['site_id'])->where('domain_id', $domain->id)->get();
+            $attr['links'] = Link::where('site_id', $attributes['site_id'])->where('domain_id',
+                $domain->id)->orderBy('created_at', 'DESC')->get();
         }
 
         return view('home', $attr + compact('domain', $parsed_url));
