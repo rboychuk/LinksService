@@ -64,8 +64,6 @@ class UpdateDomains extends Command
                     $domain             = new Domain();
                     $domain->site_id    = $site->id;
                     $domain->domain     = array_shift($item);
-                    $date               = strtotime(array_pop($item));
-                    $domain->created_at = date('Y-m-d H:i:s', $date);
                     $domain->save();
                 }
             }
