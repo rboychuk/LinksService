@@ -75,9 +75,17 @@
                                                value="{{ session('url') }}"
                                                @endif
                                                required>
+
+                                        {{--<select class="form-control" required>--}}
+                                            {{--<option readonly selected></option>--}}
+                                            {{--<option value="Blog Post">Blog Post</option>--}}
+                                            {{--<option value="Comment">Comment</option>--}}
+                                            {{--<option value="Web 2.0">Web 2.0</option>--}}
+                                        {{--</select>--}}
+
                                         <span class="input-group-btn">
-                                    <button class="btn btn-default" type="submit">Search!</button>
-                                </span>
+                                            <button class="btn btn-default" type="submit">Search!</button>
+                                        </span>
                                     </div>
                                 </form>
                             </div>
