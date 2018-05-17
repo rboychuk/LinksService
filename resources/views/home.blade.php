@@ -76,12 +76,6 @@
                                                @endif
                                                required>
 
-                                        {{--<select class="form-control" required>--}}
-                                            {{--<option readonly selected></option>--}}
-                                            {{--<option value="Blog Post">Blog Post</option>--}}
-                                            {{--<option value="Comment">Comment</option>--}}
-                                            {{--<option value="Web 2.0">Web 2.0</option>--}}
-                                        {{--</select>--}}
 
                                         <span class="input-group-btn">
                                             <button class="btn btn-default" type="submit">Search!</button>
@@ -115,17 +109,29 @@
                                                 <label for="multidomain">Make this domain available for the several
                                                     links</label>
                                             @endif
-                                            <p>
+                                                <div class="row">
                                                 @if(!$links->count() || (isset($domain) && $domain->multiple))
-                                                    <button type="submit" class="btn btn-danger" id="add_link">Add the
-                                                        link
+                                                    <div class="col-sm-1">
+                                                        <button type="submit" class="btn btn-danger" id="add_link">Add
+                                                        </button>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <select class="form-control" name="meta" required>
+                                                            <option readonly selected></option>
+                                                            <option value="Blog Post">Blog Post</option>
+                                                            <option value="Comment">Comment</option>
+                                                            <option value="Web 2.0">Web 2.0</option>
+                                                        </select>
+                                                    </div>
+                                            @endif
+                                                <div></div>
+                                                <div class="col-sm-2">
+                                                    <button type="button" class="btn btn-default"
+                                                            onclick="$('.alert').hide()">
+                                                        Not now!
                                                     </button>
-                                                @endif
-                                                <button type="button" class="btn btn-default"
-                                                        onclick="$('.alert').hide()">
-                                                    Not now!
-                                                </button>
-                                            </p>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
 

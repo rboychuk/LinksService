@@ -33,8 +33,7 @@ class LinkController extends Controller
 
         $attributes = $request->all();
         $url        = $attributes['search_url'];
-
-        $domain = $this->updateDomains($attributes);
+        $domain     = $this->updateDomains($attributes);
 
         $link = new Link();
 
@@ -42,6 +41,7 @@ class LinkController extends Controller
         $link->domain_id = $domain->id;
         $link->link      = htmlspecialchars($url);
         $link->creator   = Auth::user()->email;
+        $link->meta      = $attributes['meta'];
         $link->save();
 
         return redirect('/links/' . $attributes['site_id']);
@@ -60,12 +60,13 @@ class LinkController extends Controller
         if (is_null($domain)) {
             $domain          = new Domain();
             $domain->domain  = $parsed_url;
+            $domain->user_id = Auth::user()->id;
             $domain->site_id = $attributes['site_id'];
 
             $domain->save();
         };
         if (isset($attributes['multiple']) && $attributes['multiple']) {
-            Domain::where('domain', $parsed_url)->update(['multiple' => 1]);
+            Domain::where('domain', $parsed_url)->update(['multiple' => 1, 'user_id' => Auth::user()->id]);
         }
 
         return $domain;
