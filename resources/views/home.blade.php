@@ -121,6 +121,7 @@
                                                             <option value="Blog Post">Blog Post</option>
                                                             <option value="Comment">Comment</option>
                                                             <option value="Web 2.0">Web 2.0</option>
+                                                            <option value="Other">Other</option>
                                                         </select>
                                                     </div>
                                             @endif
