@@ -8,9 +8,26 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Link;
 use App\Site;
+use App\Services\AhrefParserService;
+use App\Services\MozLinkApiService;
 
 class ReportController extends Controller
 {
+
+    protected $ahref_service;
+
+    protected $moz_service;
+
+
+    public function __construct()
+    {
+
+        $this->moz_service = app(MozLinkApiService::class);
+
+        $this->ahref_service = app(AhrefParserService::class);
+
+    }
+
 
     public function index()
     {
@@ -37,10 +54,10 @@ class ReportController extends Controller
             $results[$link->name][] = $this->parseUrl($link->domain);
         }
 
-        foreach($results as $key=>$result){
-            $results[$key]=array_unique($result);
+        foreach ($results as $key => $result) {
+            $results[$key] = array_unique($result);
             asort($results[$key]);
-            $results[$key]=$this->makeDownloadLinks($key, $results[$key]);
+            $results[$key] = $this->makeDownloadLinks($key, $results[$key]);
         }
 
         return view('report', compact('users', 'sites', 'results'));
@@ -73,13 +90,18 @@ class ReportController extends Controller
 
         $links = Link::join('sites', 'sites.id', '=', 'site_id')
                      ->where('creator', $attr['user_email'])
-                     ->where('sites.id', $attr['site_id'])->orderBy('links.created_at','DESC')
-                     ->get(['links.*','sites.name']);
+                     ->where('sites.id', $attr['site_id'])->orderBy('links.created_at', 'DESC')
+                     ->get(['links.*', 'sites.name']);
 
         $users = User::get();
         $sites = Site::get();
 
         $path = $this->makeCsv($attr['user_email'], $links->toArray());
+
+        $links->map(function ($link) {
+            $link->moz   = $this->moz_service->getMetrics($link->link);
+            $link->ahref = $this->ahref_service->parse($link->name, $link->link);
+        });
 
         return view('report', compact('links', 'users', 'sites', 'path'));
 

@@ -64,19 +64,30 @@
                             <th>Link</th>
                             <th>Created at</th>
                             <th>Created by</th>
+                            <th>MOZ</th>
+                            <th>Ahref Validate</th>
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($links as $link)
+                        @foreach($links as $k=>$link)
                             @if(Auth::user()->email==$link->creator || Auth::user()->role=='superuser')
                                 <tr>
                                     <td>{{ $link->name }}</td>
-                                    <td>{{ $link->link }}</td>
+                                    <td @if(!$link->ahref) class="text-danger" @endif>{{ $link->link }}</td>
                                     <td>{{ $link->created_at }}</td>
                                     <td class="text-muted">{{ $link->creator }}</td>
+                                    <td>
+                                        @include('report.moz')
+                                    </td>
+                                    <td>
+                                        @include('report.ahref')
+                                    </td>
                                 </tr>
                             @endif
                         @endforeach
+                        <!-- Trigger the modal with a button -->
+
+
                         </tbody>
                     </table>
                 @endif
