@@ -37,7 +37,7 @@ class AhrefParserService
                 return file_get_contents($url);
             });
 
-            preg_match('/<a[^>]* href=[\'"].*?' . $domain . '.*?[\'"]?>(.*?)<\/a>/',
+            preg_match('/<a[^>]* href=[\'"]?(http[s]?:\/\/)' . $domain . '.*?[\'"]?>(.*?)<\/a>/',
                 $f, $matches);
 
             if (count($matches)) {
@@ -45,8 +45,8 @@ class AhrefParserService
                 preg_match('/rel=[\'"]?(nofollow|dofollow)[\'"]?/',
                     $matches[0], $rel);
 
-                $this->link['anchor'] = $matches[1] ?? $matches[1];
-                $this->link['rel']    = $rel[1] ?? $rel[1];
+                $this->link['anchor'] = $matches[2] ?? $matches[2];
+                $this->link['rel']    = count($rel) > 1 ? $rel[1] : '';
 
             };
 
