@@ -73,7 +73,8 @@
                             @if(Auth::user()->email==$link->creator || Auth::user()->role=='superuser')
                                 <tr>
                                     <td>{{ $link->name }}</td>
-                                    <td @if(!$link->ahref) class="text-danger" @endif>{{ $link->link }}</td>
+                                    <td @if(!$link->ahref) class="text-danger"
+                                        @endif style="max-width: 500px;overflow-x: auto;">{{ $link->link }}</td>
                                     <td>{{ $link->created_at }}</td>
                                     <td class="text-muted">{{ $link->creator }}</td>
                                     <td>
