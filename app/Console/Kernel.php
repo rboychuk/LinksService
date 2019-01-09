@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Console\Commands\MailReporter;
+use App\Console\Commands\UpdateAhrefsAndMetrics;
 use App\Console\Commands\UpdateDomains;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -19,6 +20,7 @@ class Kernel extends ConsoleKernel
         // Commands\Inspire::class,
         UpdateDomains::class,
         MailReporter::class,
+        UpdateAhrefsAndMetrics::class
     ];
 
 

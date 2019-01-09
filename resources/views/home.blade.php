@@ -57,6 +57,29 @@
                             @endif
                         </div>
                     @endif
+                    @if(isset($current_site))
+                        <div class="col-sm-12">
+
+                            <form action="/package_upload" method="post" enctype="multipart/form-data">
+                                {{ csrf_field() }}
+                                Choose the file with reports: <input style="margin: 10px 0 " name="file_report"
+                                                                     type="file"/>
+                                @if(session('upload_error'))
+                                    <div class="alert alert-danger" role="alert">
+                                        {{ session('upload_error') }}
+                                    </div>
+                                @endif
+                                @if(session('counter'))
+                                    <div class="alert alert-success" role="alert">
+                                        {{ session('counter'). ' links was uploaded' }}
+                                    </div>
+                                @endif
+
+                                <input type="hidden" name="site_id" value="{{$current_site->id}}">
+                                <input type="submit" value="Upload"/>
+                            </form>
+                        </div>
+                    @endif
 
                 </div>
             </div>
@@ -109,7 +132,7 @@
                                                 <label for="multidomain">Make this domain available for the several
                                                     links</label>
                                             @endif
-                                                <div class="row">
+                                            <div class="row">
                                                 @if(!$links->count() || (isset($domain) && $domain->multiple))
                                                     <div class="col-sm-1">
                                                         <button type="submit" class="btn btn-danger" id="add_link">Add
@@ -124,7 +147,7 @@
                                                             <option value="Other">Other</option>
                                                         </select>
                                                     </div>
-                                            @endif
+                                                @endif
                                                 <div></div>
                                                 <div class="col-sm-2">
                                                     <button type="button" class="btn btn-default"

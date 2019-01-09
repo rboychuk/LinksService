@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use Illuminate\Http\Request;
 
 use App\Site;
 use App\Link;
 use Illuminate\Support\Facades\Auth;
 use App\Domain;
+use Illuminate\Support\Facades\Log;
 
 class LinkController extends Controller
 {
@@ -35,16 +37,29 @@ class LinkController extends Controller
         $url        = $attributes['search_url'];
         $domain     = $this->updateDomains($attributes);
 
-        $link = new Link();
-
-        $link->site_id   = $attributes['site_id'];
-        $link->domain_id = $domain->id;
-        $link->link      = htmlspecialchars($url);
-        $link->creator   = Auth::user()->email;
-        $link->meta      = $attributes['meta'];
-        $link->save();
+        $this->createLink($attributes['site_id'], $domain->id, $url, Auth::user()->email, $attributes['meta']);
 
         return redirect('/links/' . $attributes['site_id']);
+
+    }
+
+
+    protected function createLink($site_id, $domain_id, $url, $user_email, $meta = '', $created_at = false)
+    {
+
+        $link = new Link();
+
+        $link->site_id   = $site_id;
+        $link->domain_id = $domain_id;
+        $link->link      = htmlspecialchars($url);
+        $link->creator   = $user_email;
+        $link->meta      = $meta;
+
+        if ($created_at) {
+            $link->created_at = $created_at;
+        }
+
+        $link->save();
 
     }
 
@@ -65,6 +80,7 @@ class LinkController extends Controller
 
             $domain->save();
         };
+
         if (isset($attributes['multiple']) && $attributes['multiple']) {
             Domain::where('domain', $parsed_url)->update(['multiple' => 1, 'user_id' => Auth::user()->id]);
         }
@@ -155,6 +171,66 @@ class LinkController extends Controller
         $parse = str_replace('www.', '', parse_url($url, PHP_URL_HOST));
 
         return $parse;
+
+    }
+
+
+    public function uploadFiles(Request $request)
+    {
+
+        $site_id    = $request->get('site_id');
+        $uploadfile = storage_path(basename($_FILES['file_report']['name']));
+
+        $type = $_FILES['file_report']['type'];
+
+        if ($type != 'text/csv') {
+            return redirect('/links/' . $site_id)->with('upload_error', 'Please use just CSV files');
+        }
+
+        try {
+            list($email, $month, $year) = explode('__',
+                str_replace('.csv', '', $_FILES['file_report']['name']));
+
+            $user = User::where('email', $email)->first();
+
+            if (is_null($user)) {
+                return redirect('/links/' . $site_id)->with('upload_error', 'Incorrect user name');
+            }
+            $date = date('Y-m-d H:i:s', strtotime($year . '-' . $month));
+
+            move_uploaded_file($_FILES['file_report']['tmp_name'], $uploadfile);
+            $content = [];
+
+            $f = fopen($uploadfile, 'r');
+
+            while ( ! feof($f)) {
+                $content[] = fgetcsv($f);
+            }
+
+            $counter = 0;
+
+            try {
+                foreach ($content as $record) {
+                    $url = $record[0];
+
+                    if ($l = Link::where('link', htmlspecialchars($url))->first()) {
+                        continue;
+                    }
+
+                    $domain = $this->updateDomains(['site_id' => $site_id, 'search_url' => $url]);
+                    $this->createLink($site_id, $domain->id, $url, $user->email, '', $date);
+                    $counter++;
+                }
+            } catch (\Exception $e) {
+                Log::error($e);
+            }
+
+            return redirect('/links/' . $site_id)->with('counter', $counter);
+
+        } catch (\Exception $e) {
+            return redirect('/links/' . $site_id)->with('upload_error', 'Something went wrong!!');
+        }
+
 
     }
 

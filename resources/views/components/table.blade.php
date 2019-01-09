@@ -13,7 +13,7 @@
     @foreach($links as $link)
         @if(Auth::user()->email==$link->creator || Auth::user()->role=='superuser')
             <tr>
-                <td>{{ $link->link }}</td>
+                <td style="max-width: 500px;overflow-x: auto;">{{ $link->link }}</td>
                 <td>{{ $link->created_at }}</td>
                 <td class="text-muted">{{ $link->creator }}</td>
                 @if(Auth::user()->role=='superuser')
