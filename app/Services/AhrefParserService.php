@@ -33,7 +33,7 @@ class AhrefParserService
         try {
             $key = md5($url . 'parser');
 
-            $f = Cache::remember($key, 28800, function () use ($url) {
+            $f = Cache::remember($key, 43200, function () use ($url) {
                 return file_get_contents($url);
             });
 
@@ -52,7 +52,7 @@ class AhrefParserService
 
 
         } catch (\Exception $e) {
-            Cache::put($key, false, 28800);
+            Cache::put($key, false, 43200);
             $this->link = false;
             Log::error($e);
         }

@@ -57,7 +57,7 @@ class MozLinkApiService
 
             $key = md5($url . 'moz');
 
-            $body = Cache::remember($key, 28800, function () use ($client, $requestUrl) {
+            $body = Cache::remember($key, 43200, function () use ($client, $requestUrl) {
                 sleep(11);
                 $response = $client->get($requestUrl);
                 $body     = $response->getBody()->getContents();
