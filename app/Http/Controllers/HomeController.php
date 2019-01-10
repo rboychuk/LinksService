@@ -32,6 +32,8 @@ class HomeController extends Controller
         $sites = Site::get();
         $links = [];
 
-        return view('home', compact('sites', 'links'));
+        $domain_list = app(ReportController::class)->index()->getData()['results'];
+
+        return view('home', compact('sites', 'links', 'domain_list'));
     }
 }

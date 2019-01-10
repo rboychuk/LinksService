@@ -50,6 +50,20 @@
                 @if(!is_null(Auth::user()) && Auth::user()->role=='superuser')
                     <li><a href="{{ url('/report') }}">Report</a></li>
                 @endif
+                @if(isset($domain_list))
+                    <li class="dropdown">
+                        <a class="text-danger danger dropdown-toggle" data-toggle="dropdown" href="#">Download domains
+                            <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            @foreach($domain_list as $domain=>$link)
+                                <li><a href="{{ $link }}">{{ $domain }}</a></li>
+                            @endforeach
+                        </ul>
+                    </li>
+
+                @endif
+
+
             </ul>
 
             <!-- Right Side Of Navbar -->

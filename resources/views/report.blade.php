@@ -42,17 +42,17 @@
                             </div>
                         </div>
                     @endif
-                    @if(isset($results))
-                        @foreach($results as $site=>$link)
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    <a href="{{ $link }}">
-                                        Domain list for {{ $site }}
-                                    </a>
-                                </div>
-                            </div>
-                        @endforeach
-                    @endif
+                    {{--@if(isset($results))--}}
+                        {{--@foreach($results as $site=>$link)--}}
+                            {{--<div class="col-sm-12">--}}
+                                {{--<div class="form-group">--}}
+                                    {{--<a href="{{ $link }}">--}}
+                                        {{--Domain list for {{ $site }}--}}
+                                    {{--</a>--}}
+                                {{--</div>--}}
+                            {{--</div>--}}
+                        {{--@endforeach--}}
+                    {{--@endif--}}
                 </form>
             </div>
             <div class="col-sm-9">

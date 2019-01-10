@@ -37,6 +37,6 @@ class Kernel extends ConsoleKernel
         //         ->dailyAt('23:55');
 
         $schedule->command('update:metrics')
-                 ->everyThirtyMinutes();
+                 ->twiceDaily(6, 18);
     }
 }

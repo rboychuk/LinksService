@@ -22,6 +22,8 @@ class ReportController extends Controller
     public function __construct()
     {
 
+        $this->middleware('auth');
+
         $this->moz_service = app(MozLinkApiService::class);
 
         $this->ahref_service = app(AhrefParserService::class);
