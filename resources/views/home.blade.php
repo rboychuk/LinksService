@@ -36,18 +36,7 @@
                     </div>
                     @if(Auth::user()->role=='superuser')
                         <div class="col-sm-12">
-                            <form method="POST" action="/add_site">
-                                {{ csrf_field() }}
-                                <div class="input-group">
-                                    <input type="text" name='site_name' class="form-control"
-                                           @if (session('site_url'))
-                                           value="{{ session('site_url') }}"
-                                           @endif placeholder="Add new site...">
-                                    <span class="input-group-btn">
-                                <button type="submit" class="btn btn-default" data-toggle="confirmation">Add!</button>
-                            </span>
-                                </div>
-                            </form>
+                            @include('forms.add_site')
                         </div>
                         <div class="col-sm-12">
                             @if (session('incorrect_site'))
@@ -59,25 +48,7 @@
                     @endif
                     @if(isset($current_site))
                         <div class="col-sm-12">
-
-                            <form action="/package_upload" method="post" enctype="multipart/form-data">
-                                {{ csrf_field() }}
-                                Choose the file with reports: <input style="margin: 10px 0 " name="file_report"
-                                                                     type="file"/>
-                                @if(session('upload_error'))
-                                    <div class="alert alert-danger" role="alert">
-                                        {{ session('upload_error') }}
-                                    </div>
-                                @endif
-                                @if(session('counter'))
-                                    <div class="alert alert-success" role="alert">
-                                        {{ session('counter'). ' links was uploaded' }}
-                                    </div>
-                                @endif
-
-                                <input type="hidden" name="site_id" value="{{$current_site->id}}">
-                                <input type="submit" value="Upload"/>
-                            </form>
+                            @include('forms.package_upload')
                         </div>
                     @endif
 
@@ -88,23 +59,7 @@
                     <div class="row">
                         @if(isset($current_site))
                             <div class="col-sm-12">
-                                <form method="POST" action="/search">
-                                    {{ csrf_field() }}
-                                    <div class="input-group">
-                                        <input type="hidden" name="site_id" value="{{$current_site->id}}">
-                                        <input type="text" name="search_url" class="form-control"
-                                               placeholder="Search for..."
-                                               @if (session('url'))
-                                               value="{{ session('url') }}"
-                                               @endif
-                                               required>
-
-
-                                        <span class="input-group-btn">
-                                            <button class="btn btn-default" type="submit">Search!</button>
-                                        </span>
-                                    </div>
-                                </form>
+                                @include('forms.search')
                             </div>
                             <div class="col-sm-12">
                                 @if (session('incorrect_search'))
@@ -114,52 +69,7 @@
                                 @endif
                             </div>
                             @if(isset($empty) and $empty)
-                                <form method="POST" action="/add_link">
-                                    {{ csrf_field() }}
-                                    <input type="hidden" name="site_id" value="{{ $current_site->id }}">
-                                    <input type="hidden" name="search_url" value="{{ $empty }}">
-                                    <div class="col-sm-12">
-                                        <div class="alert alert-danger alert-dismissible" role="alert">
-                                            @if(isset($domain) && !is_null($domain))
-                                                <h4>Domain <strong>{{ $domain->domain }}</strong> was found</h4>
-                                            @endif
-
-                                            <h4>Link <strong>{{ $empty }}</strong> is not available now!</h4>
-                                            <p>Do you want to add this link?</p>
-                                            @if(isset($domain) && !$domain->multiple && Auth::user()->role=='superuser')
-                                                <input type="checkbox" id='multidomain' name="multiple"
-                                                       value="{{ $links->count() }}">
-                                                <label for="multidomain">Make this domain available for the several
-                                                    links</label>
-                                            @endif
-                                            <div class="row">
-                                                @if(!$links->count() || (isset($domain) && $domain->multiple))
-                                                    <div class="col-sm-1">
-                                                        <button type="submit" class="btn btn-danger" id="add_link">Add
-                                                        </button>
-                                                    </div>
-                                                    <div class="col-sm-3">
-                                                        <select class="form-control" name="meta" required>
-                                                            <option readonly selected></option>
-                                                            <option value="Blog Post">Blog Post</option>
-                                                            <option value="Comment">Comment</option>
-                                                            <option value="Web 2.0">Web 2.0</option>
-                                                            <option value="Other">Other</option>
-                                                        </select>
-                                                    </div>
-                                                @endif
-                                                <div></div>
-                                                <div class="col-sm-2">
-                                                    <button type="button" class="btn btn-default"
-                                                            onclick="$('.alert').hide()">
-                                                        Not now!
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </form>
+                                @include('forms.add_link')
                             @endif
                         @endif
                         @endif

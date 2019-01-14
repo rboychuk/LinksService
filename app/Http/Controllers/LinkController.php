@@ -44,22 +44,68 @@ class LinkController extends Controller
     }
 
 
-    protected function createLink($site_id, $domain_id, $url, $user_email, $meta = '', $created_at = false)
+    public function updateLinks(Request $request)
     {
 
-        $link = new Link();
+        $attributes = $request->all();
 
-        $link->site_id   = $site_id;
-        $link->domain_id = $domain_id;
-        $link->link      = htmlspecialchars($url);
-        $link->creator   = $user_email;
-        $link->meta      = $meta;
+        $link = Link::find($attributes['id']);
 
-        if ($created_at) {
-            $link->created_at = $created_at;
+        Link::unguard();
+
+        foreach ($attributes as $key => $value) {
+            if ( ! is_null($link->getAttribute($key))) {
+                $link->$key = $value;
+            }
+        }
+
+        $link->enabled = isset($attributes['validate']) == 'on' ? 1 : 0;
+
+        if (isset($attributes['dublicate_domain'])) {
+            $link->dublicate_domain = $attributes['dublicate_domain'] == 'on' ? true : false;
         }
 
         $link->save();
+
+        $request->request->add(['site_id' => $link->site_id, 'user_email' => $link->creator]);
+
+        //return redirect()->action('ReportController@makeReport');
+        return app(ReportController::class)->makeReport($request);
+
+    }
+
+
+    protected function createLink(
+        $site_id,
+        $domain_id,
+        $url,
+        $user_email,
+        $meta = '',
+        $created_at = false,
+        $target_link = '',
+        $anchor = '',
+        $dublicate = false
+    ) {
+
+        if ($url) {
+            $link = new Link();
+
+            $link->site_id          = $site_id;
+            $link->domain_id        = $domain_id;
+            $link->target_url       = $target_link;
+            $link->anchor           = $anchor;
+            $link->dublicate_domain = $dublicate;
+            $link->link             = htmlspecialchars($url);
+            $link->creator          = $user_email;
+            $link->meta             = $meta;
+
+            if ($created_at) {
+                $link->created_at = $created_at;
+            }
+
+            $link->save();
+        }
+
 
     }
 
@@ -72,6 +118,8 @@ class LinkController extends Controller
 
         $domain = Domain::where('domain', $parsed_url)->where('site_id', $attributes['site_id'])->first();
 
+        $domain->dublicate = false;
+
         if (is_null($domain)) {
             $domain          = new Domain();
             $domain->domain  = $parsed_url;
@@ -79,6 +127,8 @@ class LinkController extends Controller
             $domain->site_id = $attributes['site_id'];
 
             $domain->save();
+        } else {
+            $domain->dublicate = true;
         };
 
         if (isset($attributes['multiple']) && $attributes['multiple']) {
@@ -211,14 +261,17 @@ class LinkController extends Controller
 
             try {
                 foreach ($content as $record) {
-                    $url = $record[0];
+                    $url         = $record[0];
+                    $target_link = count($record) > 1 ? $record[1] : '';
+                    $anchor      = count($record) > 2 ? $record[2] : '';
 
                     if ($l = Link::where('link', htmlspecialchars($url))->first()) {
                         continue;
                     }
 
                     $domain = $this->updateDomains(['site_id' => $site_id, 'search_url' => $url]);
-                    $this->createLink($site_id, $domain->id, $url, $user->email, '', $date);
+                    $this->createLink($site_id, $domain->id, $url, $user->email, '', $date, $target_link, $anchor,
+                        $domain->dublicate);
                     $counter++;
                 }
             } catch (\Exception $e) {

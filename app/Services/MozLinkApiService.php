@@ -70,7 +70,9 @@ class MozLinkApiService
 
             foreach ($this->metrics as $key => $metric) {
                 if (property_exists($body, $key)) {
-                    $res[$metric] = is_real($body->$key) ? round($body->$key, 2) : $body->$key;
+                    $res[$key] = is_real($body->$key) ? round($body->$key, 2) : $body->$key;
+                } else {
+                    $res[$key] = 'disable';
                 }
             }
 

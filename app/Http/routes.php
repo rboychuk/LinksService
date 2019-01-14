@@ -23,6 +23,7 @@ Route::get('/links/{id}', 'LinkController@getLinks');
 
 Route::post('/search', 'LinkController@searchLinks');
 Route::post('/add_link', 'LinkController@addLinks');
+Route::post('/update', 'LinkController@updateLinks');
 Route::post('/delete', 'LinkController@deleteLink');
 Route::post('/package_upload', 'LinkController@uploadFiles');
 
@@ -30,5 +31,5 @@ Route::post('/add_site', 'SiteController@addSite');
 Route::post('/delete_site', 'SiteController@deleteSite');
 
 Route::get('/report', 'ReportController@index');
-Route::post('/report', 'ReportController@makeReport');
+Route::post('/report', 'ReportController@makeReport')->name('make_report');
 
