@@ -41,8 +41,6 @@
                             @endif
                         @endforeach
                         <!-- Trigger the modal with a button -->
-
-
                         </tbody>
                     </table>
                 @endif

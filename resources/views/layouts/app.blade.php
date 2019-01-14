@@ -46,8 +46,8 @@
         <div class="collapse navbar-collapse" id="app-navbar-collapse">
             <!-- Left Side Of Navbar -->
             <ul class="nav navbar-nav">
-                <li><a href="{{ url('/home') }}">Home</a></li>
-                @if(!is_null(Auth::user()) && Auth::user()->role=='superuser')
+                {{--                <li><a href="{{ url('/home') }}">Home</a></li>--}}
+                @if(!is_null(Auth::user()))
                     <li><a href="{{ url('/report') }}">Report</a></li>
                 @endif
                 @if(isset($domain_list))
@@ -60,7 +60,6 @@
                             @endforeach
                         </ul>
                     </li>
-
                 @endif
 
 

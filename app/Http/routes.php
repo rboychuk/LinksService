@@ -12,12 +12,14 @@
 */
 
 Route::get('/', function () {
-    return redirect('/home');
+    return redirect('/report');
 });
 
 Route::auth();
 
-Route::get('/home', 'HomeController@index');
+Route::get('/home', function () {
+    return redirect('/report');
+});
 
 Route::get('/links/{id}', 'LinkController@getLinks');
 

@@ -62,7 +62,9 @@ class ReportController extends Controller
             $results[$key] = $this->makeDownloadLinks($key, $results[$key]);
         }
 
-        return view('report', compact('users', 'sites', 'results'));
+        $domain_list = $results;
+
+        return view('report', compact('users', 'sites', 'results', 'domain_list'));
 
     }
 
@@ -105,7 +107,9 @@ class ReportController extends Controller
             $link->ahref = $this->ahref_service->parse($link->name, $link->link);
         });
 
-        return view('report', compact('links', 'users', 'sites', 'path'));
+        $domain_list = $this->index()->getData()['results'];
+
+        return view('report', compact('links', 'users', 'sites', 'path', 'domain_list'));
 
     }
 

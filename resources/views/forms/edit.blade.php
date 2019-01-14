@@ -35,13 +35,12 @@
         </div>
     </div>
 
-    @if(isset($link->ahref) && isset($link->ahref['anchor']))
+    @if(isset($link->ahref) && isset($link->ahref['anchor']) && $link->ahref['anchor']!=$link->anchor)
         <div class="form-group row">
             <label for="ahref_anchor" class="col-sm-1 col-form-label">Anchor</label>
             <div class="col-sm-11">
                 <input type="text" class="form-control" id="ahref_anchor"
-                       @if($link->ahref['anchor']!=$link->anchor) style="background-color: red; color: white; font-weight: bold"
-                       @endif
+                       style="background-color: red; color: white; font-weight: bold"
                        value={{$link->ahref['anchor']}} >
             </div>
         </div>

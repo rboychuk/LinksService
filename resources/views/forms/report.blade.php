@@ -4,10 +4,14 @@
         <div class="form-group">
             <label for="sel2">Select User Name:</label>
             <select name="user_email" class="form-control" id="sel2" required>
+                @if(Auth::user()->role=='superuser')
                 <option selected></option>
-                @foreach($users as $user)
-                    <option value="{{ $user->email }}">{{$user->email}}</option>
-                @endforeach
+                    @foreach($users as $user)
+                        <option value="{{ $user->email }}">{{$user->email}}</option>
+                    @endforeach
+                @else
+                    <option selected value="{{ Auth::user()->email }}">{{Auth::user()->email}}</option>
+                @endif
             </select>
         </div>
     </div>
