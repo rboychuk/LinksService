@@ -118,8 +118,6 @@ class LinkController extends Controller
 
         $domain = Domain::where('domain', $parsed_url)->where('site_id', $attributes['site_id'])->first();
 
-        $domain->dublicate = false;
-
         if (is_null($domain)) {
             $domain          = new Domain();
             $domain->domain  = $parsed_url;
@@ -127,6 +125,8 @@ class LinkController extends Controller
             $domain->site_id = $attributes['site_id'];
 
             $domain->save();
+
+            $domain->dublicate = false;
         } else {
             $domain->dublicate = true;
         };
