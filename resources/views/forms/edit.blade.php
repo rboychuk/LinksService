@@ -58,14 +58,14 @@
         <label for="pa" class="col-sm-2 col-form-label">PA</label>
         <div class="col-sm-3">
             <input type="text" readonly class="form-control" id="pa" name="pa"
-                   value={{ count($link->moz)??$link->moz['upa'] }}>
+                   value={{ count($link->moz) && isset($link->moz['upa'])?$link->moz['upa']:'uploading ...' }}>
         </div>
         <div class="col-sm-1">
         </div>
         <label for="ref_domain" class="col-sm-2 col-form-label">Ref domain</label>
         <div class="col-sm-3">
             <input type="text" readonly class="form-control" id="ref_domain" name="ref_domain"
-                   value={{ count($link->moz)??$link->moz['pda'] }}>
+                   value={{ count($link->moz) && isset($link->moz['pda'])?$link->moz['pda']:'uploading ...' }}>
         </div>
     </div>
 
@@ -73,14 +73,14 @@
         <label for="out_links" class="col-sm-2 col-form-label">Внешних ссылок</label>
         <div class="col-sm-3">
             <input type="text" readonly class="form-control" id="out_links" name="out_links"
-                   value={{ count($link->moz)??$link->moz['ueid'] }}>
+                   value={{ count($link->moz) && isset($link->moz['ueid'])?$link->moz['ueid']:'uploading ...' }}>
         </div>
         <div class="col-sm-1">
         </div>
         <label for="in_links" class="col-sm-2 col-form-label">Внутренних ссылок</label>
         <div class="col-sm-3">
             <input type="text" readonly class="form-control" id="in_links" name="in_links"
-                   value={{ count($link->moz)??$link->moz['uid'] }}>
+                   value={{ count($link->moz) && isset($link->moz['uid'])?$link->moz['uid']:'uploading ...' }}>
         </div>
     </div>
 
