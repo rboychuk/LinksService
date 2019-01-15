@@ -22,7 +22,7 @@ class AhrefParserService
      *
      * @return void
      */
-    public function parse($domain, $url)
+    public function parse($domain, $url, $update = false)
     {
 
         //$url  = 'https://aliving.co/travel/post/planning-a-road-trip-be-sure-to-stop-by-this-awesome-place';
@@ -33,9 +33,13 @@ class AhrefParserService
         try {
             $key = md5($url . 'parser');
 
-            $f = Cache::remember($key, 43200, function () use ($url) {
-                return file_get_contents($url);
-            });
+            if ($update) {
+                $f = Cache::remember($key, 43200, function () use ($url) {
+                    return file_get_contents($url);
+                });
+            }else{
+                $f = Cache::get($key);
+            }
 
             preg_match('/<a[^>]* href=[\'"]?(http[s]?:\/\/)' . $domain . '.*?[\'"]?>(.*?)<\/a>/',
                 $f, $matches);

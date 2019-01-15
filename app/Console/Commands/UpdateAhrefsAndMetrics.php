@@ -56,8 +56,8 @@ class UpdateAhrefsAndMetrics extends Command
 
         $links->map(function ($link) use ($progress) {
             try {
-                $this->ahref_service->parse($link->name, $link->link);
-                $this->moz_service->getMetrics($link->link);
+                $this->ahref_service->parse($link->name, $link->link, true);
+                $this->moz_service->getMetrics($link->link, true);
             } catch (\Exception $e) {
             }
             $progress->advance();

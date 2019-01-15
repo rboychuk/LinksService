@@ -35,3 +35,5 @@ Route::post('/delete_site', 'SiteController@deleteSite');
 Route::get('/report', 'ReportController@index');
 Route::post('/report', 'ReportController@makeReport')->name('make_report');
 
+Route::get('/results', 'ResultsController@index');
+

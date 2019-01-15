@@ -29,7 +29,7 @@ class MozLinkApiService
      *
      * @return void
      */
-    public function getMetrics($url)
+    public function getMetrics($url, $update = false)
     {
 
         $client = new Client(['http_errors' => false]);
@@ -57,24 +57,32 @@ class MozLinkApiService
 
             $key = md5($url . 'moz');
 
-            $body = Cache::remember($key, 43200, function () use ($client, $requestUrl) {
-                sleep(11);
-                $response = $client->get($requestUrl);
-                $body     = $response->getBody()->getContents();
+            if ($update) {
+                $body = Cache::remember($key, 43200, function () use ($client, $requestUrl) {
+                    sleep(11);
+                    $response = $client->get($requestUrl);
+                    $body     = $response->getBody()->getContents();
 
-                $body = json_decode($body);
+                    $body = json_decode($body);
 
-                return $body;
+                    return $body;
 
-            });
+                });
+            } else {
+                $body = Cache::get($key);
+            }
 
-            foreach ($this->metrics as $key => $metric) {
-                if (property_exists($body, $key)) {
-                    $res[$key] = is_real($body->$key) ? round($body->$key, 2) : $body->$key;
-                } else {
-                    $res[$key] = 'disable';
+            if ($body) {
+                foreach ($this->metrics as $key => $metric) {
+                    if (property_exists($body, $key)) {
+                        $res[$key] = is_real($body->$key) ? round($body->$key, 2) : $body->$key;
+                    } else {
+                        $res[$key] = 'disable';
+
+                    }
                 }
             }
+
 
         } catch (BadResponseException $e) {
 
