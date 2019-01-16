@@ -17,9 +17,7 @@ Route::get('/', function () {
 
 Route::auth();
 
-Route::get('/home', function () {
-    return redirect('/report');
-});
+Route::get('/home', 'HomeController@index');
 
 Route::get('/links/{id}', 'LinkController@getLinks');
 

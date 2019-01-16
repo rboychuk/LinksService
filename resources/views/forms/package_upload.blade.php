@@ -24,7 +24,7 @@
                         <li>Email - full email address ( alexandro_123@mail.com )</li>
                         <li>Month - Month in format Jan,Feb,Jun ......</li>
                         <li>Year - Year in format 2017, 2018 ...</li>
-                        <li><strong>Be attentive!!! Delimiter is __ (вщгиду underscore)</strong></li>
+                        <li><strong>Be attentive!!! Delimiter is __ (double underscore)</strong></li>
                         <li><strong>File format is CSV</strong></li>
                     </ul>
                     <h4>File format</h4>

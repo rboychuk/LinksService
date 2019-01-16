@@ -50,7 +50,7 @@ class UpdateAhrefsAndMetrics extends Command
      */
     public function handle()
     {
-        $links = Link::join('sites', 'sites.id', '=', 'site_id')->get();
+        $links = Link::join('sites', 'sites.id', '=', 'site_id')->where('enabled', true)->get();
 
         $progress = new ProgressBar($this->output, $links->count());
 
