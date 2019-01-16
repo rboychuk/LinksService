@@ -231,11 +231,11 @@ class LinkController extends Controller
         $site_id    = $request->get('site_id');
         $uploadfile = storage_path(basename($_FILES['file_report']['name']));
 
-        $type = $_FILES['file_report']['type'];
-
-        if ($type != 'text/csv') {
-            return redirect('/links/' . $site_id)->with('upload_error', 'Please use just CSV files (not '.$type.')');
-        }
+        //$type = $_FILES['file_report']['type'];
+        //
+        //if ($type != 'text/csv') {
+        //    return redirect('/links/' . $site_id)->with('upload_error', 'Please use just CSV files (not '.$type.')');
+        //}
 
         try {
             list($email, $month, $year) = explode('__',
