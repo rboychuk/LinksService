@@ -31,7 +31,7 @@
         <label for="anchor" class="col-sm-1 col-form-label">Posted Anchor</label>
         <div class="col-sm-11">
             <input type="text" class="form-control" id="anchor" name="anchor"
-                   value={{$link->anchor}}>
+                   value="{{$link->anchor}}">
         </div>
     </div>
 
@@ -41,7 +41,7 @@
             <div class="col-sm-11">
                 <input type="text" class="form-control" id="ahref_anchor"
                        style="background-color: red; color: white; font-weight: bold"
-                       value={{$link->ahref['anchor']}} >
+                       value="{{ $link->ahref['anchor']}}" >
             </div>
         </div>
     @endif

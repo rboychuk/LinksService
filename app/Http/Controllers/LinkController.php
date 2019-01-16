@@ -234,7 +234,7 @@ class LinkController extends Controller
         $type = $_FILES['file_report']['type'];
 
         if ($type != 'text/csv') {
-            return redirect('/links/' . $site_id)->with('upload_error', 'Please use just CSV files');
+            return redirect('/links/' . $site_id)->with('upload_error', 'Please use just CSV files (not '.$type.')');
         }
 
         try {
