@@ -24,9 +24,9 @@ class ResultsController extends Controller
     public function index()
     {
 
-        $dates = $this->results_service->getDates();
-        $users = $this->results_service->getSortedUsers();
-        $all   = $this->results_service->getAllReports();
+        $dates  = $this->results_service->getDates();
+        $users  = $this->results_service->getSortedUsers();
+        $all    = $this->results_service->getAllReports();
 
         return view('_results', compact('users', 'all', 'dates'));
     }

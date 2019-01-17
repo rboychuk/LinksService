@@ -61,9 +61,9 @@ class LinkController extends Controller
 
         $link->enabled = isset($attributes['validate']) == 'on' ? 1 : 0;
 
-        if (isset($attributes['dublicate_domain'])) {
-            $link->dublicate_domain = $attributes['dublicate_domain'] == 'on' ? true : false;
-        }
+        //if (isset($attributes['dublicate_domain'])) {
+        //    $link->dublicate_domain = $attributes['dublicate_domain'] == 'on' ? true : false;
+        //}
 
         $link->save();
 
