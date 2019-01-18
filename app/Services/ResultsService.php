@@ -21,7 +21,8 @@ class ResultsService
     protected $available_emails = [
         'demianenko.kiril@gmail.com',
         'kirilovsts@gmail.com',
-        'irina_516@yahoo.com',
+        'wrightdylan1991@gmail.com',
+        'milton.iris@gmail.com',
     ];
 
 
