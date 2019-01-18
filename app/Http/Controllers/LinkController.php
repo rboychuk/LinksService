@@ -228,6 +228,7 @@ class LinkController extends Controller
     public function uploadFiles(Request $request)
     {
 
+        $meta       = $request->get('meta');
         $site_id    = $request->get('site_id');
         $uploadfile = storage_path(basename($_FILES['file_report']['name']));
 
@@ -270,7 +271,7 @@ class LinkController extends Controller
                     }
 
                     $domain = $this->updateDomains(['site_id' => $site_id, 'search_url' => $url]);
-                    $this->createLink($site_id, $domain->id, $url, $user->email, '', $date, $target_link, $anchor,
+                    $this->createLink($site_id, $domain->id, $url, $user->email, $meta, $date, $target_link, $anchor,
                         $domain->dublicate);
                     $counter++;
                 }

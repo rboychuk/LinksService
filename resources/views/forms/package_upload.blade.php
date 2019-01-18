@@ -1,13 +1,22 @@
 <form action="/package_upload" method="post" enctype="multipart/form-data">
     {{ csrf_field() }}
+    <hr>
     Choose the file with reports:
     <button type="button" class="btn btn-info" data-toggle="modal"
             data-target="#helper_upload"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
     </button>
     <input class="" style="margin: 10px 0 " name="file_report"
            type="file"/>
+        <select class="form-control" name="meta" required>
+            <option readonly selected></option>
+            <option value="Blog Post">Blog Post</option>
+            <option value="Comment">Comment</option>
+            <option value="Web 2.0">Web 2.0</option>
+            <option value="PBN">PBN</option>
+            <option value="Other">Other</option>
+        </select>
 
-
+    <hr>
     <!-- Modal -->
     <div id="helper_upload" class="modal fade" role="dialog">
         <div class="modal-dialog">
@@ -34,10 +43,6 @@
                         <li>Third column (C) - Anchor</li>
                     </ul>
                 </div>
-
-
-
-
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
