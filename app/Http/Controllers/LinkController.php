@@ -239,7 +239,7 @@ class LinkController extends Controller
 
         try {
             list($email, $month, $year) = explode('__',
-                str_replace('.csv', '', $_FILES['file_report']['name']));
+                str_replace('.csv', '', strtolower($_FILES['file_report']['name'])));
 
             $user = User::where('email', $email)->first();
 
