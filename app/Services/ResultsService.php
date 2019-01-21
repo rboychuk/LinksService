@@ -23,6 +23,7 @@ class ResultsService
         'kirilovsts@gmail.com',
         'wrightdylan1991@gmail.com',
         'milton.iris@gmail.com',
+        'alex101ki@gmail.com',
     ];
 
 

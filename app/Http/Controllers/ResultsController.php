@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\ResultsService;
-use Illuminate\Http\Request;
 
-use App\Http\Requests;
 
 class ResultsController extends Controller
 {
@@ -15,6 +13,8 @@ class ResultsController extends Controller
 
     public function __construct()
     {
+
+        $this->middleware('auth');
 
         $this->results_service = app(ResultsService::class);
 

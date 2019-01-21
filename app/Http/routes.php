@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return redirect('/report');
+    return redirect('/home');
 });
 
 Route::auth();

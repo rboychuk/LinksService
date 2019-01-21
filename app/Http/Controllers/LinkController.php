@@ -255,7 +255,9 @@ class LinkController extends Controller
             $f = fopen($uploadfile, 'r');
 
             while ( ! feof($f)) {
-                $content[] = fgetcsv($f);
+                if ($c = fgetcsv($f)) {
+                    $content[] = $c;
+                }
             }
 
             $counter = 0;
