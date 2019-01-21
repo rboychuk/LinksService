@@ -107,9 +107,15 @@ class ReportController extends Controller
             $link->ahref = $this->ahref_service->parse($link->name, $link->link);
         });
 
+        $links_collection = $links->groupBy(function ($link) {
+            $d = date('M-y', strtotime($link->created_at));
+
+            return $d;
+        });
+
         $domain_list = $this->index()->getData()['results'];
 
-        return view('report', compact('links', 'users', 'sites', 'path', 'domain_list'));
+        return view('report', compact('links_collection', 'users', 'sites', 'path', 'domain_list'));
 
     }
 

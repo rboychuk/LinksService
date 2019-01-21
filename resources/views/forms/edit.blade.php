@@ -145,7 +145,7 @@
     <div class="form-group row">
         <label for="comment" class="col-sm-2 col-form-label">Комментарий:</label>
         <div class="col-sm-9">
-            <textarea class="form-control" name="comment" id="comment" cols="10" rows="10">{{$link->comment}}</textarea>
+            <textarea class="form-control" name="comment" id="comment" cols="10" rows="3">{{$link->comment}}</textarea>
         </div>
     </div>
 
