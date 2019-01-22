@@ -79,7 +79,7 @@ class AhrefParserService
 
         /*$pattern = addcslashes("<a[^>](.*)" . $this->removeHttp($url) . "(.*)?>(.*){1}</a>{1}", '/');*/
         //$pattern = "<a[^>]+href=\"https?:\/\/" . addcslashes($this->removeHttp($url), '/') . "\"[^>]*>";
-        $pattern = "<a[^>]+href=\"https?:\/\/" . addcslashes($this->removeHttp($url), '/') . "\".*?[^>]*>(.+?)<\/a>";
+        $pattern = "<a[^>]+href=\"https?:\/\/" . addcslashes($this->removeHttp($url), '/') . ".*?\".*?[^>]*>(.+?)<\/a>";
 
         $pattern = "/$pattern/";
 

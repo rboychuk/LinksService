@@ -15,9 +15,9 @@ class AhrefTest extends TestCase
     public function testExample()
     {
 
-        $url    = 'https://www.tripoto.com/trip/hings-to-do-when-visiting-austin-texas-5c1b9cfa7563f';
+        $url    = 'http://www.whatsyourtagblog.com/best-cars-for-your-road-trip-in-the-usa/';
         $domain = 'rental24h.com';
-        $target = 'https://rental24h.com/usa/austin-airport/enterprise';
+        $target = 'https://rental24h.com/usa/company/nu';
         $domain = app(\App\Services\AhrefParserService::class)->parse($domain, $url, $target);
 
         $this->assertTrue(true);
