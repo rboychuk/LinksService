@@ -7,7 +7,18 @@
         </div>
     @endif
 
-    @if(!$link->ahref)
+    @if($link->ahref)
+        @if(!$link->ahref['link'])
+            <div class="alert alert-warning" role="alert">
+                Link wasn't Found
+            </div>
+        @endif
+        @if($link->ahref['domain'])
+            <div class="alert alert-info" role="alert">
+                Domain was found in 'href'
+            </div>
+        @endif
+    @else
         <div class="alert alert-warning" role="alert">
             Link not Found
         </div>
@@ -41,7 +52,7 @@
             <div class="col-sm-11">
                 <input type="text" class="form-control" id="ahref_anchor"
                        style="background-color: red; color: white; font-weight: bold"
-                       value="{{ $link->ahref['anchor']}}" >
+                       value="{{ $link->ahref['anchor']}}">
             </div>
         </div>
     @endif

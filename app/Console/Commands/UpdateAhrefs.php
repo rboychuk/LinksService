@@ -8,7 +8,7 @@ use App\Services\MozLinkApiService;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 
-class UpdateAhrefsAndMetrics extends Command
+class UpdateAhrefs extends Command
 {
 
     /**
@@ -16,7 +16,7 @@ class UpdateAhrefsAndMetrics extends Command
      *
      * @var string
      */
-    protected $signature = 'update:metrics';
+    protected $signature = 'update:ahrefs';
 
     /**
      * The console command description.
@@ -38,7 +38,6 @@ class UpdateAhrefsAndMetrics extends Command
     public function __construct()
     {
         parent::__construct();
-        $this->moz_service   = app(MozLinkApiService::class);
         $this->ahref_service = app(AhrefParserService::class);
     }
 
@@ -56,8 +55,7 @@ class UpdateAhrefsAndMetrics extends Command
 
         $links->map(function ($link) use ($progress) {
             try {
-                $this->ahref_service->parse($link->name, $link->link, true);
-                $this->moz_service->getMetrics($link->link, true);
+                $this->ahref_service->parse($link->name, $link->link, $link->target_url, true);
             } catch (\Exception $e) {
             }
             $progress->advance();

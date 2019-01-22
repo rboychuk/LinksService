@@ -22,7 +22,7 @@ class AhrefParserService
      *
      * @return void
      */
-    public function parse($domain, $url, $update = false)
+    public function parse($domain, $url, $target, $update = false)
     {
 
         //$url  = 'https://aliving.co/travel/post/planning-a-road-trip-be-sure-to-stop-by-this-awesome-place';
@@ -37,22 +37,27 @@ class AhrefParserService
                 $f = Cache::remember($key, 43200, function () use ($url) {
                     return file_get_contents($url);
                 });
-            }else{
+            } else {
                 $f = Cache::get($key);
             }
 
-            preg_match('/<a[^>]* href=[\'"]?(http[s]?:\/\/)' . $domain . '.*?[\'"]?>(.*?)<\/a>/',
-                $f, $matches);
+            $matches = $this->findAhref($target, $f);
 
-            if (count($matches)) {
+            if ( ! count($matches)) {
+                $this->link['link'] = false;
+                $matches            = $this->findAhref($domain, $f);
+                if ( ! count($matches)) {
 
-                preg_match('/rel=[\'"]?(nofollow|dofollow)[\'"]?/',
-                    $matches[0], $rel);
+                    $this->link['domain'] = false;
 
-                $this->link['anchor'] = $matches[2] ?? $matches[2];
-                $this->link['rel']    = count($rel) > 1 ? $rel[1] : '';
+                    return $this->link;
+                }
+            }
 
-            };
+            $this->link['domain'] = true;
+            $this->link['rel']    = stripos($matches[0], 'nofollow') ? 'nofollow' : '';
+
+            $this->link['anchor'] = $matches[4] ?? $this->prepareAnchor($matches[4]);
 
 
         } catch (\Exception $e) {
@@ -62,6 +67,41 @@ class AhrefParserService
         }
 
         return $this->link;
+
+    }
+
+
+    protected function findAhref($url, $f)
+    {
+        if ( ! $url) {
+            return [];
+        }
+
+        $pattern = "/<a\s(.*)href(.*)?" . $this->removeHttp($url) . "(.*)>{1}(.*){1}<\/a>{1}/";
+
+        preg_match($pattern, $f, $matches);
+
+        return $matches;
+
+    }
+
+
+    protected function removeHttp($url)
+    {
+
+        $url = preg_replace("/(https?:\/\/)/", "", $url);
+
+        return $url;
+
+    }
+
+
+    protected function prepareAnchor($anchor)
+    {
+
+        $anchor = trim(strip_tags($anchor));
+
+        return $anchor;
 
     }
 

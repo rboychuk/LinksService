@@ -38,7 +38,12 @@
                                                 </td>
                                                 <td>{{ $link->name }}</td>
                                                 <td style="max-width: 450px;overflow-x: auto;"><a
-                                                        @if(!$link->ahref) class="text-danger"
+                                                        @if($link->ahref)
+                                                        @if(!$link->ahref['link'] && !$link->ahref['domain'])
+                                                        class="text-danger"
+                                                        @elseif($link->ahref['domain'])
+                                                        class="text-muted"
+                                                        @endif
                                                         @endif
                                                         href="{{ $link->link }}">{{ $link->link }}</a></td>
                                                 <td class="text-muted">{{ $link->creator }}</td>

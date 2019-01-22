@@ -3,7 +3,8 @@
 namespace App\Console;
 
 use App\Console\Commands\MailReporter;
-use App\Console\Commands\UpdateAhrefsAndMetrics;
+use App\Console\Commands\UpdateAhrefs;
+use App\Console\Commands\UpdateMetrics;
 use App\Console\Commands\UpdateDomains;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -20,7 +21,8 @@ class Kernel extends ConsoleKernel
         // Commands\Inspire::class,
         UpdateDomains::class,
         MailReporter::class,
-        UpdateAhrefsAndMetrics::class
+        UpdateMetrics::class,
+        UpdateAhrefs::class
     ];
 
 
@@ -37,6 +39,8 @@ class Kernel extends ConsoleKernel
         //         ->dailyAt('23:55');
 
         $schedule->command('update:metrics')
-                 ->everyFiveMinutes();
+                 ->everyThirtyMinutes();
+        $schedule->command('update:ahrefs')
+                 ->everyThirtyMinutes();
     }
 }

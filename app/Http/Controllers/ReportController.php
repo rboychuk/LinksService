@@ -104,7 +104,7 @@ class ReportController extends Controller
 
         $links->map(function ($link) {
             $link->moz   = $this->moz_service->getMetrics($link->link);
-            $link->ahref = $this->ahref_service->parse($link->name, $link->link);
+            $link->ahref = $this->ahref_service->parse($link->name, $link->link, $link->target);
         });
 
         $links_collection = $links->groupBy(function ($link) {
