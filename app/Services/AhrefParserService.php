@@ -54,6 +54,7 @@ class AhrefParserService
                 }
             }
 
+            $this->link['link'] = true;
             $this->link['domain'] = true;
             $this->link['rel']    = stripos($matches[0], 'nofollow') ? 'nofollow' : '';
 
