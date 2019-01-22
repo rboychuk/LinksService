@@ -12,11 +12,11 @@
             <div class="alert alert-warning" role="alert">
                 Link wasn't Found
             </div>
-        @endif
-        @if($link->ahref['domain'])
-            <div class="alert alert-info" role="alert">
-                Domain was found in 'href'
-            </div>
+            @if($link->ahref['domain'])
+                <div class="alert alert-info" role="alert">
+                    Domain was found in 'href'
+                </div>
+            @endif
         @endif
     @else
         <div class="alert alert-warning" role="alert">

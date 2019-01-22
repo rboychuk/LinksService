@@ -39,7 +39,9 @@
                                                 <td>{{ $link->name }}</td>
                                                 <td style="max-width: 450px;overflow-x: auto;"><a
                                                         @if($link->ahref)
-                                                        @if(!$link->ahref['link'] && !$link->ahref['domain'])
+                                                        @if($link->ahref['link'])
+                                                        class="text-info"
+                                                        @elseif(!$link->ahref['domain'])
                                                         class="text-danger"
                                                         @elseif($link->ahref['domain'])
                                                         class="text-muted"
