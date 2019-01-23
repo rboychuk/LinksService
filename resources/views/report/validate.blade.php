@@ -1,9 +1,9 @@
 <button type="button" class="btn @if($link->enabled) btn-success @else btn-warning @endif" data-toggle="modal"
-        data-target="#validateModal{{$k}}"><span class="glyphicon glyphicon-check" aria-hidden="true"></span>
+        data-target="#validateModal{{$k.'-'.$date}}"><span class="glyphicon glyphicon-check" aria-hidden="true"></span>
 </button>
 
 <!-- Modal -->
-<div id="validateModal{{$k}}" class="modal fade" role="dialog">
+<div id="validateModal{{$k.'-'.$date}}" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
