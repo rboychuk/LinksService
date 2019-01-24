@@ -28,7 +28,7 @@
                 <!-- Tab panes -->
                 <div class="tab-content">
                     @foreach(array_keys($users) as $key=>$user)
-                        <div class="tab-pane active" id="user_{{ $key }}">
+                        <div class="tab-pane @if($key==0) active @endif" id="user_{{ $key }}">
                             <div id="bar_charts_{{ $key }}"></div>
                         </div>
                     @endforeach

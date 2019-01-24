@@ -19,7 +19,7 @@
                     <div class="tab-content">
                         @foreach($links_collection as $date=>$links)
                             <div id="report-{{ $date }}"
-                                 class="tab-pane fade in @if($date==$links->keys()[0]) active @endif">
+                                 class="tab-pane fade in @if($links_collection->first()==$links) active @endif">
                                 <table class="table table-responsive-sm" size="1">
                                     <thead>
                                     <tr>
