@@ -4,7 +4,7 @@
         <input type="hidden" name="site_id" value="{{$current_site->id}}">
         <input type="text" name="search_url" class="form-control"
                placeholder="Search for..."
-               @if (session('url'))
+               @if (session('url') && is_string(session('url')))
                value="{{ session('url') }}"
                @endif
                required>
