@@ -110,7 +110,7 @@ class LinkController extends Controller
     }
 
 
-    protected function updateDomains($attributes)
+    public function updateDomains($attributes)
     {
 
         $url        = $attributes['search_url'];
@@ -121,7 +121,7 @@ class LinkController extends Controller
         if (is_null($domain)) {
             $domain          = new Domain();
             $domain->domain  = $parsed_url;
-            $domain->user_id = Auth::user()->id;
+            $domain->user_id = isset($attributes['user_id']) ? $attributes['user_id'] : Auth::user()->id;
             $domain->site_id = $attributes['site_id'];
 
             $domain->save();
