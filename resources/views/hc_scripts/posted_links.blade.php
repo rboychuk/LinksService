@@ -38,10 +38,21 @@
 
             },
                 @endforeach
+                @if($goals)
+            {
+                name: 'Goals',
+                data: [
+                    @foreach($goals as $count)
+                    {{ $count }},
+                    @endforeach
+                ]
+
+            },
+                @endif
             {
                 name: 'TOTAL',
                 data: [
-                    @foreach($all as $count)
+                    @foreach($results_service->getAllReports() as $count)
                     {{ $count }},
                     @endforeach
                 ]

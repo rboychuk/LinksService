@@ -4,10 +4,7 @@
             type: 'column'
         },
         title: {
-            text: 'Monthly Average Rainfall'
-        },
-        subtitle: {
-            text: 'Source: WorldClimate.com'
+            text: 'Report'
         },
         xAxis: {
             categories: [
