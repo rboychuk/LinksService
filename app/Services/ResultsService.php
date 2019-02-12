@@ -99,18 +99,22 @@ class ResultsService
 
     public function getSortedGoals()
     {
-        $dates = $this->getDates();
 
-        if (array_key_exists($this->meta_name, $this->goals)) {
-            $goals = $this->goals[$this->meta_name];
+        if ($this->goals) {
+            $dates = $this->getDates();
 
-            $results = [];
+            if (array_key_exists($this->meta_name, $this->goals)) {
+                $goals = $this->goals[$this->meta_name];
 
-            foreach ($dates as $date) {
-                $results[$date] = array_key_exists($date, $goals) ? $goals[$date] : false;
+                $results = [];
+
+                foreach ($dates as $date) {
+                    $results[$date] = array_key_exists($date, $goals) ? $goals[$date] : false;
+                }
+
+                return $results;
             }
 
-            return $results;
         }
 
         return false;
