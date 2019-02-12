@@ -65,6 +65,8 @@ class UpdateUniqueDomains extends Command
 
             if ($d->dublicate) {
                 $link->dublicate_domain = true;
+            }else{
+                $link->dublicate_domain = false;
             }
 
             $link->save();
