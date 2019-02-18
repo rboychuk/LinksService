@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Console\Commands\CheckExpensiveLinks;
 use App\Console\Commands\MailReporter;
 use App\Console\Commands\UpdateAhrefs;
 use App\Console\Commands\UpdateMetrics;
@@ -24,7 +25,8 @@ class Kernel extends ConsoleKernel
         MailReporter::class,
         UpdateMetrics::class,
         UpdateAhrefs::class,
-        UpdateUniqueDomains::class
+        UpdateUniqueDomains::class,
+        CheckExpensiveLinks::class
     ];
 
 
@@ -46,6 +48,9 @@ class Kernel extends ConsoleKernel
                  ->everyThirtyMinutes();
 
         $schedule->command('update:domains')
+                 ->everyTenMinutes();
+
+        $schedule->command('check:expensive_links')
                  ->everyTenMinutes();
     }
 }
