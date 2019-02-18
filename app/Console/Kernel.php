@@ -51,6 +51,6 @@ class Kernel extends ConsoleKernel
                  ->everyTenMinutes();
 
         $schedule->command('check:expensive_links')
-                 ->everyTenMinutes();
+                 ->twiceDaily(1,13);
     }
 }
