@@ -1,4 +1,4 @@
-<select class="form-control" name="meta" required>
+<select class="form-control" name="meta">
     <option readonly selected></option>
     <option value="Blog Post">Blog Post</option>
     <option value="Comment">Comment</option>

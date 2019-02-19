@@ -20,8 +20,15 @@
 
     @if(isset($users))
         <div class="container">
-            <h3>Results for <strong>{{ $results_service->getSiteName()->name }}</strong> and
-                <strong>{{ $results_service->getMetaName() }}</strong> type</h3>
+
+            <h3>
+                @if($site_name=$results_service->getSiteName())
+                    Results for <strong>{{ $site_name }}</strong> and
+                    <strong>{{ $results_service->getMetaName() }}</strong> type
+                @else
+
+                @endif
+            </h3>
             <div class="row">
                 <div class="col-sm-12">
                     <div id="container"></div>

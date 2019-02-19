@@ -37,15 +37,24 @@ class ResultsService
     const YEAR = 2018;
 
 
-    public function __construct($site_id = 1, $meta = 'Comment')
+    public function __construct($site_id = false, $meta = false)
     {
 
-        $this->links = Link::where('site_id', $site_id)->where('meta', $meta)->whereIn('creator',
-            $this->available_emails)->orderBy('created_at')->get();
+        $query = Link::whereIn('creator',
+            $this->available_emails);
 
-        $this->site_name = Site::find($site_id);
+        if ($site_id) {
+            $query = $query->where('site_id', $site_id);
+        }
+        if ($meta) {
+            $query = $query->where('meta', $meta);
+        }
 
-        $this->meta_name = $meta;
+        $this->links = $query->orderBy('created_at')->get();
+
+        $this->site_name = $site_id ? Site::find($site_id) : false;
+
+        $this->meta_name = $meta ? $meta : false;
 
         $this->goals = $this->getGoals();
 
@@ -103,7 +112,8 @@ class ResultsService
         if ($this->goals) {
             $dates = $this->getDates();
 
-            if (array_key_exists($this->meta_name, $this->goals)) {
+            if ($this->meta_name && array_key_exists($this->meta_name, $this->goals)) {
+
                 $goals = $this->goals[$this->meta_name];
 
                 $results = [];
