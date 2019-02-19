@@ -23,7 +23,7 @@
 
             <h3>
                 @if($site_name=$results_service->getSiteName())
-                    Results for <strong>{{ $site_name }}</strong> and
+                    Results for <strong>{{ $site_name->name }}</strong> and
                     <strong>{{ $results_service->getMetaName() }}</strong> type
                 @else
 
