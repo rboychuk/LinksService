@@ -59,7 +59,7 @@ class CheckExpensiveLinks extends Command
      */
     public function handle()
     {
-        $links = Link::where('price', '>', 5)->get();
+        $links = Link::where('price', '>', 1)->get();
 
         $broken = $this->brokenLinks($links);
 
@@ -67,7 +67,7 @@ class CheckExpensiveLinks extends Command
 
             $broken->filter(function ($link) {
                 $site = Site::find($link->site_id)->first();
-                $this->notify(new SlackNotification($site->name, $link->link));
+                $this->notify(new SlackNotification($site->name, $link));
             });
 
         }

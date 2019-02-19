@@ -23,9 +23,9 @@ class SlackNotification extends Notification
      *
      * @return void
      */
-    public function __construct($site, $content)
+    public function __construct($site, $link)
     {
-        $this->link = $content;
+        $this->link = $link;
         $this->site = $site;
     }
 
@@ -49,7 +49,8 @@ class SlackNotification extends Notification
             ->error()
             ->attachment(function ($attach) {
                 $attach->title('Link for ' . $this->site . ' is Broken')
-                       ->content($this->link);
+                       ->content($this->link->link . ' | ' . $this->link->creator . ' | ' . $this->link->created_at
+                       );
             });
     }
 }
