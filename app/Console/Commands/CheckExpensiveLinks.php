@@ -81,7 +81,7 @@ class CheckExpensiveLinks extends Command
 
         $links = $links->filter(function ($link) use ($progress) {
 
-            //sleep(1);
+            sleep(1);
 
             $progress->advance();
 
