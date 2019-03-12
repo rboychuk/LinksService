@@ -58,7 +58,7 @@ class AhrefParserService
             $this->link['domain'] = true;
             $this->link['rel']    = stripos($matches[0], 'nofollow') ? 'nofollow' : '';
 
-            $this->link['anchor'] = $matches[1] ?? $this->prepareAnchor($matches[1]);
+            $this->link['anchor'] = isset($matches[1]) ? $this->prepareAnchor($matches[1]) : '';
 
 
         } catch (\Exception $e) {
@@ -105,7 +105,6 @@ class AhrefParserService
     protected function prepareAnchor($anchor)
     {
 
-        $anchor = str_replace(['<strong>','</strong>'],'',$anchor);
         $anchor = trim(strip_tags($anchor));
 
         return $anchor;
