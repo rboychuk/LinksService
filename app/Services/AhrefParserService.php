@@ -54,7 +54,7 @@ class AhrefParserService
                 }
             }
 
-            $this->link['link'] = true;
+            $this->link['link']   = true;
             $this->link['domain'] = true;
             $this->link['rel']    = stripos($matches[0], 'nofollow') ? 'nofollow' : '';
 
@@ -78,6 +78,7 @@ class AhrefParserService
             return [];
         }
 
+        $f = str_replace(["\r\n", "\r", "\n", "\t", '  ', '    ', '    '], ' ', $f);
         /*$pattern = addcslashes("<a[^>](.*)" . $this->removeHttp($url) . "(.*)?>(.*){1}</a>{1}", '/');*/
         //$pattern = "<a[^>]+href=\"https?:\/\/" . addcslashes($this->removeHttp($url), '/') . "\"[^>]*>";
         $pattern = "<a[^>]+href=\"https?:\/\/" . addcslashes($this->removeHttp($url), '/') . ".*?\".*?[^>]*>(.+?)<\/a>";
@@ -104,6 +105,7 @@ class AhrefParserService
     protected function prepareAnchor($anchor)
     {
 
+        $anchor = str_replace(['<strong>','</strong>'],'',$anchor);
         $anchor = trim(strip_tags($anchor));
 
         return $anchor;

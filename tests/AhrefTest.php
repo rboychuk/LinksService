@@ -15,11 +15,12 @@ class AhrefTest extends TestCase
     public function testExample()
     {
 
-        $url    = 'http://www.whatsyourtagblog.com/best-cars-for-your-road-trip-in-the-usa/';
+        $url    = 'http://www.rs-royal.com/exploring-atlanta-places-you-cannot-miss/';
         $domain = 'rental24h.com';
-        $target = 'https://rental24h.com/usa/company/nu';
-        $domain = app(\App\Services\AhrefParserService::class)->parse($domain, $url, $target);
+        $target = 'https://rental24h.com/usa/atlanta-airport';
+        $domain = app(\App\Services\AhrefParserService::class)->parse($domain, $url, $target, true);
 
         $this->assertTrue(true);
+
     }
 }
