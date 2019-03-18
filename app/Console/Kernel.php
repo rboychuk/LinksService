@@ -50,7 +50,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('update:domains')
                  ->everyTenMinutes();
 
-        $schedule->command('check:expensive_links')
-                 ->twiceDaily(1,13);
+        //$schedule->command('check:expensive_links')
+        //         ->twiceDaily(1,13);
     }
 }
