@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Domain;
+use App\Site;
+use Illuminate\Http\Request;
 
 class DisavowController extends Controller
 {
@@ -10,13 +12,15 @@ class DisavowController extends Controller
     public function index()
     {
 
+        $sites = Site::all();
 
-        return view('disavow.index');
+        return view('disavow.index', compact('sites'));
     }
 
 
-    public function update()
+    public function update(Request $request)
     {
+        $site_id = $request->get('site_id');
 
         $ahrefs_links = $this->getContentFromRequest('ahrefs_list');
         $google_links = $this->getContentFromRequest('google_list');
@@ -24,12 +28,12 @@ class DisavowController extends Controller
         $array = array_merge($ahrefs_links, $google_links);
         $array = array_unique($array);
 
-        $domains = Domain::pluck('domain')->toArray();
+        $domains = Domain::where('site_id', $site_id)->pluck('domain')->toArray();
 
         $diff = array_diff($array, $domains);
         asort($diff);
 
-        $url = $this->saveResults($diff);
+        $url = $this->saveResults($diff, $site_id);
 
         return view('disavow.update', compact('url'));
 
@@ -38,6 +42,7 @@ class DisavowController extends Controller
 
     protected function getContentFromRequest($fileName)
     {
+
 
         $upload = storage_path('tmp_file_' . $fileName . 'csv');
 
@@ -62,12 +67,14 @@ class DisavowController extends Controller
     }
 
 
-    protected function saveResults($results)
+    protected function saveResults($results, $site_id)
     {
         try {
+            $site_name = str_replace('.', '_', Site::find($site_id)->name);
+
             $date = date('Y_m_d');
 
-            $filename = 'disavow_' . $date . '.csv';
+            $filename = $site_name . '_disavow_' . $date . '.csv';
 
             $path = public_path($filename);
 
