@@ -65,7 +65,9 @@ class DisavowController extends Controller
         while ( ! feof($f)) {
             if ($c = fgetcsv($f)) {
                 if (isset($c[$key])) {
-                    $content[] = trim(str_replace('"', '', $c[$key]), " ");
+                    $string    = $c[$key];
+                    $string    = preg_replace('/[\x00-\x1F\x7F\xA0]/u', '', $string);
+                    $content[] = trim(str_replace('"', '', $string), " ");
                 }
             }
         }
