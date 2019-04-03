@@ -61,6 +61,7 @@
                     </li>
                 @endif
                 <li><a href="{{ url('/results') }}">Results</a></li>
+                <li><a href="{{ url('/disavow') }}">Disavow</a></li>
 
 
             </ul>

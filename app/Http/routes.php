@@ -37,3 +37,6 @@ Route::get('/results', 'ResultsController@index')->name('results');
 Route::post('/results', 'ResultsController@getResults');
 Route::post('/add_goals', 'ResultsController@addGoals');
 
+Route::get('/disavow', 'DisavowController@index');
+Route::post('/disavow', 'DisavowController@update');
+
