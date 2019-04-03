@@ -22,10 +22,11 @@ class DisavowController extends Controller
     {
         $site_id = $request->get('site_id');
 
-        $ahrefs_links = $this->getContentFromRequest('ahrefs_list');
-        $google_links = $this->getContentFromRequest('google_list');
+        $ahrefs_links  = $this->getContentFromRequest('ahrefs_list');
+        $google_links  = $this->getContentFromRequest('google_list');
+        $disavow_links = $this->getContentFromRequest('disavow_list');
 
-        $array = array_merge($ahrefs_links, $google_links);
+        $array = array_merge($ahrefs_links, $google_links, $disavow_links);
         $array = array_unique($array);
 
         $domains = Domain::where('site_id', $site_id)->pluck('domain')->toArray();
@@ -44,7 +45,11 @@ class DisavowController extends Controller
     {
 
 
-        $upload = storage_path('tmp_file_' . $fileName . 'csv');
+        $upload = storage_path('tmp_file_' . $fileName . '.csv');
+
+        if (file_exists($upload)) {
+            unlink($upload);
+        }
 
         $results = move_uploaded_file($_FILES[$fileName]['tmp_name'], $upload);
 
@@ -55,11 +60,17 @@ class DisavowController extends Controller
         }
         $f = fopen($upload, 'r');
 
+        $key = $fileName == 'ahrefs_list' ? 1 : 0;
+
         while ( ! feof($f)) {
             if ($c = fgetcsv($f)) {
-                $content[] = $c[0];
+                if (isset($c[$key])) {
+                    $content[] = trim(str_replace('"', '', $c[$key]), " ");
+                }
             }
         }
+
+        fclose($f);
         unset($content[0]);
 
         return $content;
@@ -82,6 +93,7 @@ class DisavowController extends Controller
             foreach ($results as $result) {
                 fputcsv($f, [$result]);
             }
+            fclose($f);
 
             $url = url($filename);
         } catch (\Exception $e) {
