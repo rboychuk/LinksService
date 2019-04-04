@@ -24,15 +24,16 @@ class DisavowController extends Controller
 
         $ahrefs_links  = $this->getContentFromRequest('ahrefs_list');
         $google_links  = $this->getContentFromRequest('google_list');
-        $disavow_links = $this->getContentFromRequest('disavow_list');
+        $disavow_links = $this->checkDisavowLinks($this->getContentFromRequest('disavow_list'));
 
-        $array = array_merge($ahrefs_links, $google_links, $disavow_links);
-        $array = array_unique($array);
+        $array = array_merge($ahrefs_links, $google_links);
 
         $domains = Domain::where('site_id', $site_id)->pluck('domain')->toArray();
 
         $diff = array_diff($array, $domains);
+        $diff = array_unique(array_diff($diff, $disavow_links));
         asort($diff);
+        asort($disavow_links);
 
         $url = $this->saveResults($diff, $site_id);
 
@@ -43,7 +44,6 @@ class DisavowController extends Controller
 
     protected function getContentFromRequest($fileName)
     {
-
 
         $upload = storage_path('tmp_file_' . $fileName . '.csv');
 
@@ -103,5 +103,25 @@ class DisavowController extends Controller
         }
 
         return $url;
+    }
+
+
+    public function checkDisavowLinks($list)
+    {
+
+        $pattern = '/^(https?:\/\/)?([\da-z\.-]+\.[a-z\.]{2,6})([\/\w \.-]*)*\/?$/';
+
+        $new_list = [];
+
+        foreach ($list as $url) {
+            $url = str_replace('domain:', '', $url);
+            preg_match($pattern, $url, $matches);
+            if (count($matches) > 2) {
+                $new_list[] = $matches[2];
+            }
+        }
+
+        return $new_list;
+
     }
 }
