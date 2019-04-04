@@ -26,14 +26,15 @@ class DisavowController extends Controller
         $google_links  = $this->getContentFromRequest('google_list');
         $disavow_links = $this->checkDisavowLinks($this->getContentFromRequest('disavow_list'));
 
-        $array = array_merge($ahrefs_links, $google_links);
+        //$array = array_merge($ahrefs_links, $google_links);
 
         $domains = Domain::where('site_id', $site_id)->pluck('domain')->toArray();
 
-        $diff = array_diff($array, $domains);
-        $diff = array_unique(array_diff($diff, $disavow_links));
+        $diff = array_diff($google_links, $ahrefs_links, $disavow_links, $domains);
+
+        $diff = array_unique($diff);
+
         asort($diff);
-        asort($disavow_links);
 
         $url = $this->saveResults($diff, $site_id);
 
