@@ -37,7 +37,8 @@ class DisavowController extends Controller
 
         $url = $this->saveResults($diff, $site_id);
 
-        return view('disavow.update', compact('url'));
+        return view('disavow.update',
+            compact('url', 'ahrefs_links', 'google_links', 'disavow_links', 'domains', 'diff'));
 
     }
 
@@ -60,7 +61,7 @@ class DisavowController extends Controller
         }
         $f = fopen($upload, 'r');
 
-        $key = $fileName == 'ahrefs_list' ? 1 : 0;
+        $key = 0;
 
         while ( ! feof($f)) {
             if ($c = fgetcsv($f)) {
