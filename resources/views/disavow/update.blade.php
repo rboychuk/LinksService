@@ -8,6 +8,7 @@
         <p>Google <strong>{{ count($google_links) }}</strong></p>
         <p>Disavow <strong>{{ count($disavow_links) }}</strong></p>
         <p>Our Domains <strong>{{ count($domains) }}</strong></p>
+        <p>Our Disavow domains <strong>{{ count($disavow_domains) }}</strong></p>
         <p>New Disavow <strong>{{ count($diff) }}</strong></p>
         <div class="row">
         </div>
@@ -17,11 +18,15 @@
                     <a href="{{ $url }}">
                         <button type="button" class="btn btn-success">Link with results</button>
                     </a>
+
                 @else
                     <div class="alert alert-danger" role="alert">
                         Something went wrong
                     </div>
                 @endif
+                <a href="{{ route('disavow_index') }}">
+                    <button type="button" class="btn btn-info">Back to Disavow Page</button>
+                </a>
             </div>
         </div>
     </div>

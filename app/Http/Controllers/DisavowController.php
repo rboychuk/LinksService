@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Disavow;
 use App\Domain;
 use App\Site;
 use Illuminate\Http\Request;
@@ -28,9 +29,10 @@ class DisavowController extends Controller
 
         //$array = array_merge($ahrefs_links, $google_links);
 
-        $domains = Domain::where('site_id', $site_id)->pluck('domain')->toArray();
+        $domains         = Domain::where('site_id', $site_id)->pluck('domain')->toArray();
+        $disavow_domains = Disavow::pluck('domain')->toArray();
 
-        $diff = array_diff($google_links, $ahrefs_links, $disavow_links, $domains);
+        $diff = array_diff($google_links, $ahrefs_links, $disavow_links, $domains, $disavow_domains);
 
         $diff = array_unique($diff);
 
@@ -39,7 +41,7 @@ class DisavowController extends Controller
         $url = $this->saveResults($diff, $site_id);
 
         return view('disavow.update',
-            compact('url', 'ahrefs_links', 'google_links', 'disavow_links', 'domains', 'diff'));
+            compact('url', 'ahrefs_links', 'google_links', 'disavow_links', 'domains', 'disavow_domains', 'diff'));
 
     }
 
@@ -124,6 +126,36 @@ class DisavowController extends Controller
         }
 
         return $new_list;
+
+    }
+
+
+    public function updateDisavowFile(Request $request)
+    {
+
+        $results = [];
+
+        $file = $request->file('disavow_file')->openFile('r');
+
+        while ( ! $file->eof()) {
+            $results[] = $file->fgetcsv()[0];
+        }
+        unset($results[0]);
+
+        $results = array_unique($results);
+
+        Disavow::unguard();
+
+        $counter = 0;
+
+        foreach ($results as $domain) {
+            $res     = Disavow::updateOrCreate(
+                ['domain' => $domain]
+            );
+            $counter += $res->wasRecentlyCreated;
+        }
+
+        return redirect(route('disavow_index'))->with('uploaded_domains', $counter);
 
     }
 }
