@@ -8,7 +8,7 @@
         <p>Google <strong>{{ count($google_links) }}</strong></p>
         <p>Disavow <strong>{{ count($disavow_links) }}</strong></p>
         <p>Our Domains <strong>{{ count($domains) }}</strong></p>
-        <p>Our Disavow domains <strong>{{ count($disavow_domains) }}</strong></p>
+        <p>Our Checked Good domains <strong>{{ count($disavow_domains) }}</strong></p>
         <p>New Disavow <strong>{{ count($diff) }}</strong></p>
         <div class="row">
         </div>

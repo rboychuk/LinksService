@@ -6,5 +6,5 @@
                type="file"/>
     </div>
 
-    <button class="btn btn-warning" type="submit">Upload disavow file</button>
+    <button class="btn btn-warning" type="submit">Upload file with "good" domains</button>
 </form>
