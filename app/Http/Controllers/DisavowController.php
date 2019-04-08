@@ -149,10 +149,12 @@ class DisavowController extends Controller
         $counter = 0;
 
         foreach ($results as $domain) {
-            $res     = Disavow::updateOrCreate(
-                ['domain' => $domain]
-            );
-            $counter += $res->wasRecentlyCreated;
+            if ($domain) {
+                $res     = Disavow::updateOrCreate(
+                    ['domain' => $domain]
+                );
+                $counter += $res->wasRecentlyCreated;
+            }
         }
 
         return redirect(route('disavow_index'))->with('uploaded_domains', $counter);
