@@ -2,7 +2,7 @@
     {{ csrf_field() }}
 
     <div class="row" style="padding: 10px 0">
-        <input class="col-sm-2" name="disavow_file" id="disavow_list"
+        <input required class="col-sm-2" name="disavow_file" id="disavow_list"
                type="file"/>
     </div>
 

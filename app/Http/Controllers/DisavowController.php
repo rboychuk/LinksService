@@ -157,7 +157,7 @@ class DisavowController extends Controller
             }
         }
 
-        return redirect(route('disavow_index'))->with('uploaded_domains', $counter);
+        return redirect(secure_url(route('disavow')))->with('uploaded_domains', $counter);
 
     }
 }
