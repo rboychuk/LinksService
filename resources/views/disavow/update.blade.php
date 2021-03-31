@@ -21,7 +21,7 @@
         <p class="p_comment"><strong>{{ count($disavow_links) }}</strong> Ссылки которые вы загрузили из файла Disavow</p>
         <p class="p_comment"><strong>{{ count($domains) }}</strong> Количество уникальных доменов</p>
         <p class="p_comment"><strong>{{ count($disavow_domains) }}</strong> Disavow домены, которые были добавлены вручную</p>
-        <p class="p_comment"><strong>{{ count($diff) }}</strong> Новые домены (из google доменов, которых нет в ahrefs,disavow,domains,disavov domains)</p>
+        <p class="p_comment"><strong>{{ count($diff) }}</strong> Новые домены (из google,ahrefs доменов, которых нет в disavow , domains , disavov domains)</p>
         <div class="row">
         </div>
         <div class="row">

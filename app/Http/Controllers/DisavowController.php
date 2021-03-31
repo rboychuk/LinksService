@@ -25,18 +25,26 @@ class DisavowController extends Controller
 
         $ahrefs_links  = $this->getContentFromRequest('ahrefs_list');
         $google_links  = $this->getContentFromRequest('google_list');
+
         $disavow_links = $this->checkDisavowLinks($this->getContentFromRequest('disavow_list'));
 
-        //$array = array_merge($ahrefs_links, $google_links);
+        $array = array_merge($ahrefs_links, $google_links);
+        $array = array_unique($array);
 
         $domains         = Domain::where('site_id', $site_id)->pluck('domain')->toArray();
         $disavow_domains = Disavow::pluck('domain')->toArray();
 
-        $diff = array_diff($google_links, $ahrefs_links, $disavow_links, $domains, $disavow_domains);
+        $diff = array_diff($array, $disavow_links, $domains, $disavow_domains);
 
         $diff = array_unique($diff);
 
         asort($diff);
+
+        foreach($disavow_links as $ll){
+            if(in_array($ll,$diff)){
+                $cs=1;
+            }
+        }
 
         $url = $this->saveResults($diff, $site_id);
 
@@ -119,6 +127,7 @@ class DisavowController extends Controller
 
         foreach ($list as $url) {
             $url = str_replace('domain:', '', $url);
+            $url = str_replace('www.', '', $url);
             preg_match($pattern, $url, $matches);
             if (count($matches) > 2) {
                 $new_list[] = $matches[2];
