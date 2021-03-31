@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Disavow;
+use App\GrayDomain;
 use App\Domain;
 use App\Site;
 use Illuminate\Http\Request;
@@ -32,19 +33,13 @@ class DisavowController extends Controller
         $array = array_unique($array);
 
         $domains         = Domain::where('site_id', $site_id)->pluck('domain')->toArray();
-        $disavow_domains = Disavow::pluck('domain')->toArray();
+        $disavow_domains = GrayDomain::pluck('domain')->toArray();
 
         $diff = array_diff($array, $disavow_links, $domains, $disavow_domains);
 
         $diff = array_unique($diff);
 
         asort($diff);
-
-        foreach($disavow_links as $ll){
-            if(in_array($ll,$diff)){
-                $cs=1;
-            }
-        }
 
         $url = $this->saveResults($diff, $site_id);
 
@@ -138,28 +133,26 @@ class DisavowController extends Controller
 
     }
 
-
-    public function updateDisavowFile(Request $request)
+    public function updateGrayDomains(Request $request)
     {
 
         $results = [];
 
-        $file = $request->file('disavow_file')->openFile('r');
+        $file = $request->file('gray_domain')->openFile('r');
 
         while ( ! $file->eof()) {
             $results[] = $file->fgetcsv()[0];
         }
-        unset($results[0]);
 
         $results = array_unique($results);
 
-        Disavow::unguard();
+        GrayDomain::unguard();
 
         $counter = 0;
 
         foreach ($results as $domain) {
             if ($domain) {
-                $res     = Disavow::updateOrCreate(
+                $res     = GrayDomain::updateOrCreate(
                     ['domain' => $domain]
                 );
                 $counter += $res->wasRecentlyCreated;
@@ -169,4 +162,5 @@ class DisavowController extends Controller
         return redirect(secure_url('disavow'))->with('uploaded_domains', $counter);
 
     }
+
 }

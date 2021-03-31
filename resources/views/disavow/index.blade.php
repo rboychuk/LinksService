@@ -7,7 +7,7 @@
 
         @if (session('uploaded_domains'))
             <div class="alert alert-success">
-                <strong>{{ session('uploaded_domains') }}</strong> Disavow домены добавлены
+                <strong>{{ session('uploaded_domains') }}</strong> Домены добавлены
             </div>
         @endif
 
