@@ -37,7 +37,8 @@ class DisavowController extends Controller
 
         $count_unique = count($array);
 
-        $domains      = Domain::where('site_id', $site_id)->pluck('domain')->toArray();
+        $domains      = Domain::pluck('domain')->toArray();
+        $domains = array_unique($domains);
         $gray_domains = GrayDomain::pluck('domain')->toArray();
         asort($gray_domains);
         asort($domains);
