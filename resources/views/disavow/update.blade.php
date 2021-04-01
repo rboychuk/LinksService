@@ -30,7 +30,6 @@
                     <a href="{{ $url }}">
                         <button type="button" class="btn btn-success">Link with results</button>
                     </a>
-
                 @else
                     <div class="alert alert-danger" role="alert">
                         Something went wrong

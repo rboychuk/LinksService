@@ -87,10 +87,10 @@ class DisavowController extends Controller
     }
 
 
-    protected function saveResults($results, $site_id)
+    protected function saveResults($results, $site_id=null,$site_name=null)
     {
         try {
-            $site_name = str_replace('.', '_', Site::find($site_id)->name);
+            $site_name = $site_id?str_replace('.', '_', Site::find($site_id)->name):$site_name;
 
             $date = date('Y_m_d');
 
@@ -130,6 +130,26 @@ class DisavowController extends Controller
         }
 
         return $new_list;
+
+    }
+
+    public function extractDomains(Request $request){
+
+        $results = [];
+
+        $file = $request->file('extract_domain')->openFile('r');
+
+        while ( ! $file->eof()) {
+            $results[] = $file->fgetcsv()[0];
+        }
+
+        $results = $this->checkDisavowLinks($results);
+
+        asort($results);
+
+        $url =$this->saveResults($results,null,"extract");
+
+        return redirect(secure_url('disavow'))->with('extractDomains', $url);
 
     }
 

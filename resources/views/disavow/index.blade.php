@@ -11,7 +11,11 @@
             </div>
         @endif
 
-        @include('forms.upload_disavow')
+        <diw class="row">
+            @include('forms.upload_disavow')
+            @include('forms.extract_domains')
+        </diw>
+
         <hr>
 
         @include('forms.disavow')
