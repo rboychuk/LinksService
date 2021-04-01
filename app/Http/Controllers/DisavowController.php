@@ -27,19 +27,23 @@ class DisavowController extends Controller
         $ahrefs_links = $this->getContentFromRequest('ahrefs_list');
         $google_links = $this->getContentFromRequest('google_list');
 
+
         $disavow_links = $this->checkDisavowLinks($this->getContentFromRequest('disavow_list'));
+        asort($disavow_links);
 
         $array = array_merge($ahrefs_links, $google_links);
         $array = array_unique($array);
+        asort($array);
 
         $count_unique = count($array);
 
         $domains      = Domain::where('site_id', $site_id)->pluck('domain')->toArray();
         $gray_domains = GrayDomain::pluck('domain')->toArray();
-
+        asort($gray_domains);
+        asort($domains);
         $disavow_ddd = Disavow::pluck('domain')->toArray();
 
-        $this->saveResults($disavow_ddd, null, 'disavow_from_db');
+        //$this->saveResults($disavow_ddd, null, 'disavow_from_db');
 
         $array                  = array_diff($array, $disavow_links);
         $count_in_disavow_links = $count_unique - count($array);
@@ -47,8 +51,6 @@ class DisavowController extends Controller
         $count_in_domains       = $count_unique - count($array) - $count_in_disavow_links;
         $array                  = array_diff($array, $gray_domains);
         $count_in_gray_domains  = $count_unique - count($array) - $count_in_disavow_links - $count_in_domains;
-        $array                  = array_diff($array, $disavow_ddd);
-        $count_in_disavow_db  =     $count_unique - count($array) - $count_in_disavow_links - $count_in_domains-$count_in_gray_domains;
 
         $diff = array_unique($array);
 
@@ -58,7 +60,7 @@ class DisavowController extends Controller
 
         return view('disavow.update',
             compact('url', 'ahrefs_links', 'google_links', 'disavow_links', 'domains', 'gray_domains', 'diff',
-                'count_unique', 'count_in_disavow_links', 'count_in_domains', 'count_in_gray_domains','count_in_disavow_db','disavow_ddd'));
+                'count_unique', 'count_in_disavow_links', 'count_in_domains', 'count_in_gray_domains','disavow_ddd'));
 
     }
 
@@ -182,7 +184,7 @@ class DisavowController extends Controller
         }
 
         $results = array_unique($results);
-
+        $results = $this->checkDisavowLinks($results);
         GrayDomain::unguard();
 
         $counter = 0;
