@@ -22,6 +22,7 @@
         <p class="p_comment"><strong>{{ count($disavow_links) }} / {{$count_in_disavow_links}}</strong> Ссылки которые вы загрузили из файла Disavow / Совпадений со списком google+ahrefs</p>
         <p class="p_comment"><strong>{{ count($domains) }} / {{$count_in_domains}}</strong> Количество доменов, добавленных при загрузке линков / Совпадений со списком google+ahrefs</p>
         <p class="p_comment"><strong>{{ count($gray_domains) }} / {{$count_in_gray_domains}}</strong> "Серые" домены, которые были добавлены вручную / Совпадений со списком google+ahrefs</p>
+        <p class="p_comment"><strong>{{ count($diff) }}</strong> Новые домены (из google,ahrefs доменов, которых нет в серых, уникальных доменах, disavow файле)</p>
         <div class="row">
         </div>
         <div class="row">
