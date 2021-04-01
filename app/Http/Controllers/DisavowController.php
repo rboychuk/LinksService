@@ -27,7 +27,6 @@ class DisavowController extends Controller
         $ahrefs_links = $this->getContentFromRequest('ahrefs_list');
         $google_links = $this->getContentFromRequest('google_list');
 
-
         $disavow_links = $this->checkDisavowLinks($this->getContentFromRequest('disavow_list'));
         asort($disavow_links);
 
@@ -38,20 +37,23 @@ class DisavowController extends Controller
         $count_unique = count($array);
 
         $domains      = Domain::pluck('domain')->toArray();
-        $domains = array_unique($domains);
+        $domains      = array_unique($domains);
         $gray_domains = GrayDomain::pluck('domain')->toArray();
         asort($gray_domains);
         asort($domains);
-        $disavow_ddd = Disavow::pluck('domain')->toArray();
 
         //$this->saveResults($disavow_ddd, null, 'disavow_from_db');
+        $links_in_disavow = array_intersect($array, $disavow_links);
+        $links_in_disavow_url = $this->saveResults($links_in_disavow, null,'links_in_disavow_file');
+        $links_in_gray     = array_intersect($array, $gray_domains);
+        $links_in_gray_url     = $this->saveResults($links_in_gray, null,'links_in_gray_list');
+
+        $links_in_domain = array_intersect($array,$domains);
 
         $array                  = array_diff($array, $disavow_links);
         $count_in_disavow_links = $count_unique - count($array);
         $array                  = array_diff($array, $domains);
-        $count_in_domains       = $count_unique - count($array) - $count_in_disavow_links;
         $array                  = array_diff($array, $gray_domains);
-        $count_in_gray_domains  = $count_unique - count($array) - $count_in_disavow_links - $count_in_domains;
 
         $diff = array_unique($array);
 
@@ -61,7 +63,8 @@ class DisavowController extends Controller
 
         return view('disavow.update',
             compact('url', 'ahrefs_links', 'google_links', 'disavow_links', 'domains', 'gray_domains', 'diff',
-                'count_unique', 'count_in_disavow_links', 'count_in_domains', 'count_in_gray_domains','disavow_ddd'));
+                'count_unique', 'count_in_disavow_links',
+            'links_in_disavow_url','links_in_gray_url','links_in_disavow','links_in_gray','links_in_domain'));
 
     }
 
