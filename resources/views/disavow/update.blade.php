@@ -10,7 +10,7 @@
         }
         .p_comment strong {
             font-size: 14pt;
-            width: 50px;
+            width: 130px;
             display: inline-block;
         }
     </style>
