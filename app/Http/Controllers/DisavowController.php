@@ -24,34 +24,41 @@ class DisavowController extends Controller
     {
         $site_id = $request->get('site_id');
 
-        $ahrefs_links  = $this->getContentFromRequest('ahrefs_list');
-        $google_links  = $this->getContentFromRequest('google_list');
+        $ahrefs_links = $this->getContentFromRequest('ahrefs_list');
+        $google_links = $this->getContentFromRequest('google_list');
 
         $disavow_links = $this->checkDisavowLinks($this->getContentFromRequest('disavow_list'));
-
 
         $array = array_merge($ahrefs_links, $google_links);
         $array = array_unique($array);
 
         $count_unique = count($array);
 
-        $domains         = Domain::where('site_id', $site_id)->pluck('domain')->toArray();
-        $disavow_domains = GrayDomain::pluck('domain')->toArray();
+        $domains      = Domain::where('site_id', $site_id)->pluck('domain')->toArray();
+        $gray_domains = GrayDomain::pluck('domain')->toArray();
 
         $disavow_ddd = Disavow::pluck('domain')->toArray();
 
-        $this->saveResults($disavow_ddd, $site_id,'disavow_from_db');
+        $this->saveResults($disavow_ddd, null, 'disavow_from_db');
 
-        $diff = array_diff($array, $disavow_links, $domains, $disavow_domains);
+        $array                  = array_diff($array, $disavow_links);
+        $count_in_disavow_links = $count_unique - count($array);
+        $array                  = array_diff($array, $domains);
+        $count_in_domains       = $count_unique - count($array) - $count_in_disavow_links;
+        $array                  = array_diff($array, $gray_domains);
+        $count_in_gray_domains  = $count_unique - count($array) - $count_in_disavow_links - $count_in_domains;
+        $array                  = array_diff($array, $disavow_ddd);
+        $count_in_disavow_db  =     $count_unique - count($array) - $count_in_disavow_links - $count_in_domains-$count_in_gray_domains;
 
-        $diff = array_unique($diff);
+        $diff = array_unique($array);
 
         asort($diff);
 
         $url = $this->saveResults($diff, $site_id);
 
         return view('disavow.update',
-            compact('url', 'ahrefs_links', 'google_links', 'disavow_links', 'domains', 'disavow_domains', 'diff','count_unique'));
+            compact('url', 'ahrefs_links', 'google_links', 'disavow_links', 'domains', 'gray_domains', 'diff',
+                'count_unique', 'count_in_disavow_links', 'count_in_domains', 'count_in_gray_domains','count_in_disavow_db','disavow_ddd'));
 
     }
 
@@ -94,10 +101,10 @@ class DisavowController extends Controller
     }
 
 
-    protected function saveResults($results, $site_id=null,$site_name=null)
+    protected function saveResults($results, $site_id = null, $site_name = null)
     {
         try {
-            $site_name = $site_id?str_replace('.', '_', Site::find($site_id)->name):$site_name;
+            $site_name = $site_id ? str_replace('.', '_', Site::find($site_id)->name) : $site_name;
 
             $date = date('Y_m_d');
 
@@ -140,7 +147,9 @@ class DisavowController extends Controller
 
     }
 
-    public function extractDomains(Request $request){
+
+    public function extractDomains(Request $request)
+    {
 
         $results = [];
 
@@ -154,11 +163,12 @@ class DisavowController extends Controller
 
         asort($results);
 
-        $url =$this->saveResults($results,null,"extract");
+        $url = $this->saveResults($results, null, "extract");
 
         return redirect(secure_url('disavow'))->with('extractDomains', $url);
 
     }
+
 
     public function updateGrayDomains(Request $request)
     {
