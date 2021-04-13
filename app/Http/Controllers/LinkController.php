@@ -256,6 +256,9 @@ class LinkController extends Controller
 
             while ( ! feof($f)) {
                 if ($c = fgetcsv($f)) {
+                    if(count($c)==1){
+                        $c = fgetcsv($f,0,';');
+                    }
                     $content[] = $c;
                 }
             }
