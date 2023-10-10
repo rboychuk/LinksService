@@ -26,6 +26,10 @@ class ResultsService
         'milton.iris@gmail.com',
         'alex101ki@gmail.com',
         'produa98@gmail.com',
+        'mega.putilovaa@gmail.com ',
+        'nataliiapanchenko23@gmail.com',
+        'anastasiapysneva@gmail.com',
+
     ];
 
     protected $site_name;
@@ -40,8 +44,7 @@ class ResultsService
     public function __construct($site_id = false, $meta = false)
     {
 
-        $query = Link::whereIn('creator',
-            $this->available_emails);
+        $query = Link::where('creator','!=','');
 
         if ($site_id) {
             $query = $query->where('site_id', $site_id);
@@ -58,6 +61,8 @@ class ResultsService
 
         $this->goals = $this->getGoals();
 
+        $this->year = date('Y')-2;
+
     }
 
 
@@ -68,6 +73,9 @@ class ResultsService
             return date('Y-M', strtotime($link->created_at));
         })->unique(function ($link) {
             return $link;
+        })->filter(function($date){
+            $y = explode('-',$date);
+            return $y[0]>=$this->year;
         });
 
         return $dates;
@@ -194,7 +202,7 @@ class ResultsService
                 if ($k) {
                     $results[$k] = [];
                     foreach ($dates as $num => $date) {
-                        $d               = self::YEAR . '-' . $dates[$num];
+                        $d               = $this->year . '-' . $dates[$num];
                         $results[$k][$d] = $key[$num];
                     }
                     array_shift($results[$k]);
